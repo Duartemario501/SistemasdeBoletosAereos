@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "959468750638",
+    "project_id": "sistemadeboletosaereos",
+    "storage_bucket": "sistemadeboletosaereos.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:959468750638:android:87a5352c58ed86f58adcbf",
+        "android_client_info": {
+          "package_name": "com.example.sistemasdeboletosaereos"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "959468750638-agqg00c5ke7p3u57udvc0pflvlp353ej.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sistemasdeboletosaereos",
+            "certificate_hash": "79d44c19a1bc0de31da8879bfac02fa1983a6587"
+          }
+        },
+        {
+          "client_id": "959468750638-11t3cvka190jlmla38522ppborhtovb7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAAltulQwlKKWV9KA6b8gFQJjsOzk_Rzl8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "959468750638-11t3cvka190jlmla38522ppborhtovb7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

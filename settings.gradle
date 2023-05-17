@@ -3,8 +3,11 @@ pluginManagement {
         google()
         mavenCentral()
         gradlePluginPortal()
+        maven { url "https://jitpack.io" }
+        maven { url "https://mavenrepo.com" } // Repositorio Maven que se agregará
     }
 }
+
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
@@ -12,5 +15,11 @@ dependencyResolutionManagement {
         mavenCentral()
     }
 }
+
 rootProject.name = "SistemasdeBoletosAereos"
+
+
 include ':app'
+
+
+
