@@ -12,6 +12,7 @@ import android.view.WindowInsets
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.databinding.ActivityStartBinding
 
 
@@ -96,7 +97,7 @@ class Start : AppCompatActivity() {
         // while interacting with the UI.
         binding.fullscreenContent.setOnTouchListener(delayHideTouchListener)
         Handler().postDelayed({
-                val mainIntent = Intent(this@Start, MainActivity::class.java)
+                val mainIntent = Intent(this@Start, LoginActivity::class.java)
                 startActivity(mainIntent)
                 finish()
             }, SPLASH_TIME_OUT.toLong())

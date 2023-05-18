@@ -11,7 +11,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SistemasdeBoletosAereos"
         tools:targetApi="31">
-
+        <activity
+            android:name=".Login.LoginActivity"
+            android:exported="false"
+            android:label="@string/title_activity_login"
+            android:theme="@style/Theme.SistemasdeBoletosAereos.Fullscreen"/>/>
+        <activity
+            android:name=".Login.RegistroActivity"
+            android:exported="false"
+            android:theme="@style/Theme.SistemasdeBoletosAereos.Fullscreen"/>
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -27,7 +35,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="YOUR_API_KEY" />
 
-  
         <activity
             android:name=".Start"
             android:configChanges="orientation|keyboardHidden|screenSize"
