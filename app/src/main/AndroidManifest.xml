@@ -14,8 +14,8 @@
         <activity
             android:name=".Login.LoginActivity"
             android:exported="false"
-            android:label="@string/title_activity_login"
-            android:theme="@style/Theme.SistemasdeBoletosAereos.Fullscreen"/>/>
+            android:label="Inicio de sesion"/>
+
         <activity
             android:name=".Login.RegistroActivity"
             android:exported="false"
