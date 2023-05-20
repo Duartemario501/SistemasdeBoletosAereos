@@ -1,10 +1,15 @@
 package com.example.sistemasdeboletosaereos.Login
 
+import android.app.AlertDialog
+import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Editable
 import android.text.TextUtils
+import android.text.TextWatcher
 import android.view.View
+import android.widget.ArrayAdapter
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
@@ -15,6 +20,8 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.lang.ref.Reference
 import java.net.Authenticator
+import java.util.*
+import android.widget.Spinner
 
 
 class RegistroActivity : AppCompatActivity() {
@@ -38,17 +45,81 @@ class RegistroActivity : AppCompatActivity() {
         txtNombre=findViewById(R.id.txtNombre)
         txtTelefono=findViewById(R.id.txtTelefono)
         txtFechaNacimiento=findViewById(R.id.TxtFechaNacimiento)
-
         progressBar=findViewById(R.id.progressBar)
+        val spnAreaCode: Spinner = findViewById(R.id.spnAreaCode)
+
+
         database= FirebaseDatabase.getInstance()
         auth= FirebaseAuth.getInstance()
 
         dbReference=database.reference.child("User")
 
+        txtFechaNacimiento.setOnClickListener { showDatePickerDialog()}
+        supportActionBar?.hide()
+
+        val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, areaCodes)
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spnAreaCode.setAdapter(adapter)
+
+        val selectedItem = spnAreaCode.selectedItem as AreaCode
+
+        txtContraseña.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus) {
+                val text = txtContraseña.text.toString()
+                if (text.length < 6) {
+                    Toast.makeText(this, "Por favor, Ingresa una contraseña con almenos  digitos", Toast.LENGTH_SHORT).show();
+                    txtContraseña.setText("") // Establece el texto en una cadena vacía
+                } else {
+
+                }
+            }
+        }
+
+
     }
 
+    data class AreaCode(val code: String, val country: String) {
+        override fun toString(): String {
+            return "$code - $country"
+        }
+    }
+    val areaCodes = listOf(
+        AreaCode("+1", "Estados Unidos"),
+        AreaCode("+52", "México"),
+        AreaCode("+44", "Reino Unido"),
+        AreaCode("+503", "El Salvador"),
+    )
+
+
+
+
+    private fun showDatePickerDialog() {
+        val calendar = Calendar.getInstance()
+        val year = calendar.get(Calendar.YEAR)
+        val month = calendar.get(Calendar.MONTH)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+
+        val datePickerDialog = DatePickerDialog(
+            this,
+            { _, selectedYear, selectedMonth, selectedDay ->
+                val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
+                txtFechaNacimiento.setText(selectedDate)
+
+            },
+            year,
+            month,
+            day
+        )
+
+        datePickerDialog.show()
+    }
+
+
     fun Registro(view: View){
-        creacionCuenta()
+        if (TextUtils.isEmpty(txtContraseña.getText().toString()) ||TextUtils.isEmpty(txtNombre.getText().toString()) ||TextUtils.isEmpty(txtFechaNacimiento.getText().toString()) ||TextUtils.isEmpty(txtTelefono.getText().toString()) ||TextUtils.isEmpty(txtCorreo.getText().toString()) ){
+            Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
+        }else creacionCuenta()
+
     }
 
     private fun creacionCuenta(){
@@ -89,5 +160,9 @@ class RegistroActivity : AppCompatActivity() {
                 }
 
             }
+    }
+
+    fun Regresar(view: View) {
+        startActivity(Intent(this,LoginActivity::class.java))
     }
 }

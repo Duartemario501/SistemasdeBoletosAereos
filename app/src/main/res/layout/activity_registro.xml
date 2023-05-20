@@ -6,12 +6,15 @@
     android:layout_height="match_parent"
     tools:context=".Login.RegistroActivity">
 
+
+
     <Button
-        android:onClick="Registro"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/button"
+        android:layout_width="359dp"
+        android:layout_height="35dp"
         android:background="#00ACB6"
         android:hint="Crear cuenta"
+        android:onClick="Registro"
         android:textColorHint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/txtEmpresa2"
         app:layout_constraintEnd_toEndOf="parent"
@@ -67,21 +70,21 @@
 
     <EditText
         android:id="@+id/txtTelefono"
-        android:layout_width="352dp"
-        android:layout_height="43dp"
+        android:layout_width="217dp"
+        android:layout_height="49dp"
         android:layout_below="@+id/EtiRegistro"
-        android:ems="10"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="-6dp"
         android:layout_marginRight="30dp"
+        android:ems="10"
         android:hint="Telefono"
         android:inputType="phone"
         app:layout_constraintBottom_toTopOf="@+id/txtCorreo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.559"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.922"
+        app:layout_constraintVertical_bias="0.936"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -109,9 +112,12 @@
         android:layout_marginLeft="30dp"
         android:layout_marginTop="-6dp"
         android:layout_marginRight="30dp"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:cursorVisible="false"
+        android:inputType="none"
         android:ems="10"
         android:hint="Fecha de nacimiento"
-        android:inputType="date"
         app:layout_constraintBottom_toTopOf="@+id/txtTelefono"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -119,11 +125,27 @@
         app:layout_constraintVertical_bias="0.904"
         tools:ignore="MissingConstraints" />
 
+
+    <Spinner
+        android:id="@+id/spnAreaCode"
+        android:layout_width="112dp"
+        android:layout_height="45dp"
+        android:textSize="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/txtTelefono"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.527"
+        tools:ignore="MissingConstraints" />
+
     <TextView
         android:id="@+id/txtEmpresa"
         android:layout_width="412dp"
         android:layout_height="65dp"
         android:background="#00acb6"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
         android:text="@string/soar"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -161,10 +183,10 @@
         android:layout_height="57dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.011"
+        app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@drawable/logoico"
         tools:ignore="MissingConstraints" />
 
@@ -185,16 +207,26 @@
     <ProgressBar
         android:id="@+id/progressBar"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="405dp"
+        android:layout_height="21dp"
         android:layout_below="@+id/EtiRegistro"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="-6dp"
         android:indeterminate="true"
         android:visibility="gone"
-        android:layout_marginRight="30dp"
-        tools:layout_editor_absoluteX="37dp"
-        tools:layout_editor_absoluteY="613dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/button"
+        app:layout_constraintVertical_bias="0.168"
+        tools:ignore="MissingConstraints" />
+
+    <Button
+        android:onClick="Regresar"
+        android:layout_width="89dp"
+        android:layout_height="53dp"
+        android:drawableBottom="?attr/actionModeCloseDrawable"
+        android:drawableTint="#D3FFFFFF"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="-5dp"
         tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

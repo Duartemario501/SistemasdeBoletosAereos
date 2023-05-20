@@ -98,7 +98,7 @@ class Start : AppCompatActivity() {
         // while interacting with the UI.
         binding.fullscreenContent.setOnTouchListener(delayHideTouchListener)
         Handler().postDelayed({
-                val mainIntent = Intent(this@Start, RegistroActivity::class.java)
+                val mainIntent = Intent(this@Start, LoginActivity::class.java)
                 startActivity(mainIntent)
                 finish()
             }, SPLASH_TIME_OUT.toLong())

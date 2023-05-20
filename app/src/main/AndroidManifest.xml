@@ -19,7 +19,7 @@
         <activity
             android:name=".Login.RegistroActivity"
             android:exported="false"
-            android:label="Registro"/>
+            android:label=""/>
         />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
