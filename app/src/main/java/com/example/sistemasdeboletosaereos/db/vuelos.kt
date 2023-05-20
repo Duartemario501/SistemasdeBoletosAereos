@@ -4,7 +4,7 @@ package com.example.sistemasdeboletosaereos.db
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
-import androidx.room.ForeignKey.CASCADE
+
 import java.util.Date
 
 @Entity(
@@ -16,7 +16,7 @@ import java.util.Date
             entity = AerolineasEntity::class,
             parentColumns = ["id_aerolineas"],
             childColumns = ["id_aerolineas"],
-            onDelete = CASCADE
+
         )
     ]
 )

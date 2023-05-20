@@ -7,15 +7,18 @@
     tools:context=".Login.RegistroActivity">
 
     <Button
-        android:id="@+id/button"
-        android:layout_width="195dp"
-        android:layout_height="68dp"
+        android:onClick="Registro"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:background="#00ACB6"
         android:hint="Crear cuenta"
-        android:textColor="@color/white"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="97dp"
-        tools:layout_editor_absoluteY="541dp" />
+        android:textColorHint="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/txtEmpresa2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/TxtContraseña"
+        app:layout_constraintVertical_bias="0.511"
+        tools:ignore="MissingConstraints" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
@@ -26,93 +29,143 @@
 
     <EditText
         android:id="@+id/TxtContraseña"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="Contraseña"
         android:inputType="textPassword"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="442dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtEmpresa2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.806"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/txtCorreo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="352dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="Correo electronico"
         android:inputType="textEmailAddress"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="380dp" />
+        app:layout_constraintBottom_toTopOf="@+id/TxtContraseña"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.932"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/txtTelefono"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="352dp"
+        android:layout_height="43dp"
+        android:layout_below="@+id/EtiRegistro"
         android:ems="10"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
         android:hint="Telefono"
         android:inputType="phone"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="315dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtCorreo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.559"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.922"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/txtNombre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="345dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="24dp"
         android:ems="10"
         android:hint="Nombre"
         android:inputType="textPersonName"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="187dp" />
+        app:layout_constraintBottom_toTopOf="@+id/TxtFechaNacimiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.545"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <EditText
         android:id="@+id/TxtFechaNacimiento"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="351dp"
+        android:layout_height="49dp"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
         android:ems="10"
         android:hint="Fecha de nacimiento"
         android:inputType="date"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="67dp"
-        tools:layout_editor_absoluteY="252dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtTelefono"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.904"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtEmpresa"
         android:layout_width="412dp"
         android:layout_height="65dp"
         android:background="#00acb6"
-        android:text="Soar"
-        android:textColor="@color/white"
-        android:textSize="40dp"
-        android:textStyle="italic"
+        android:text="@string/soar"
         android:textAlignment="center"
-        tools:layout_editor_absoluteX="1dp"
+        android:textColor="@color/white"
+        android:textSize="50dp"
+        android:textStyle="italic"
+        app:layout_constraintBottom_toTopOf="@+id/EtiRegistro"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtEmpresa2"
         android:layout_width="412dp"
         android:layout_height="65dp"
+        android:layout_marginBottom="4dp"
         android:background="#00acb6"
         android:text=""
         android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="40dp"
         android:textStyle="italic"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="667dp" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0"
+        tools:ignore="MissingConstraints" />
 
     <ImageView
         android:id="@+id/ImgIco"
         android:layout_width="96dp"
         android:layout_height="57dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.011"
         app:srcCompat="@drawable/logoico"
-        tools:layout_editor_absoluteX="1dp"
-        tools:layout_editor_absoluteY="0dp"
         tools:ignore="MissingConstraints" />
 
     <TextView
@@ -121,8 +174,27 @@
         android:layout_height="wrap_content"
         android:text="@string/registrate"
         android:textSize="50dp"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteX="97dp"
-        tools:layout_editor_absoluteY="80dp" />
+        app:layout_constraintBottom_toTopOf="@+id/txtNombre"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.675"
+        tools:ignore="MissingConstraints" />
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        android:layout_marginRight="30dp"
+        tools:layout_editor_absoluteX="37dp"
+        tools:layout_editor_absoluteY="613dp"
+        tools:ignore="MissingConstraints" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

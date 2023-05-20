@@ -19,7 +19,8 @@
         <activity
             android:name=".Login.RegistroActivity"
             android:exported="false"
-            android:theme="@style/Theme.SistemasdeBoletosAereos.Fullscreen"/>
+            android:label="Registro"/>
+        />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
