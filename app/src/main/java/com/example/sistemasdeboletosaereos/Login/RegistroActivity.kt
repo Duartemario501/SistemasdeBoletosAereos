@@ -37,6 +37,7 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
@@ -74,6 +75,7 @@ class RegistroActivity : AppCompatActivity() {
                 }
             }
         }
+
 
 
     }
@@ -121,6 +123,14 @@ class RegistroActivity : AppCompatActivity() {
         }else creacionCuenta()
 
     }
+    private fun esCorreoValido(correo: String): Boolean {
+        return if (correo.isEmpty()) {
+            false
+        } else {
+            android.util.Patterns.EMAIL_ADDRESS.matcher(correo).matches()
+        }
+    }
+
 
     private fun creacionCuenta(){
         val nombre:String=txtNombre.text.toString()
@@ -131,18 +141,29 @@ class RegistroActivity : AppCompatActivity() {
         if (!TextUtils.isEmpty(nombre)&&!TextUtils.isEmpty(correo)&&!TextUtils.isEmpty(contraseña)&&!TextUtils.isEmpty(telefono)&&!TextUtils.isEmpty(fecha))
         {
             progressBar.visibility= View.VISIBLE
-            auth.createUserWithEmailAndPassword(correo,contraseña)
-                .addOnCompleteListener(this){
-                    task->
-                    if (task.isComplete){
-                        val user:FirebaseUser?=auth.currentUser
-                        verificacionCorreo(user)
-                        val userBD= user?.uid?.let { dbReference.child(it) }
 
-                        userBD?.child("nombre")?.setValue(nombre)
-                        accion()
+            if (esCorreoValido(correo)) {
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo, contraseña)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            val user:FirebaseUser?=auth.currentUser
+                            verificacionCorreo(user)
+                            val userBD= user?.uid?.let { dbReference.child(it) }
+                            userBD?.child("nombre")?.setValue(correo)
+                            Toast.makeText(this, correo, Toast.LENGTH_SHORT).show();
+                            accion()
+                        } else {
+                            // Ocurrió un error al crear el usuario
+                            Toast.makeText(this, "error al crear el usuario", Toast.LENGTH_LONG).show()
+                        }
                     }
-                }
+            } else {
+                // Mostrar un mensaje de error al usuario sobre el formato de correo electrónico no válido
+                Toast.makeText(this, "formato de correo electrónico no válido", Toast.LENGTH_LONG).show()
+
+            }
+
+
         }
 
     }
