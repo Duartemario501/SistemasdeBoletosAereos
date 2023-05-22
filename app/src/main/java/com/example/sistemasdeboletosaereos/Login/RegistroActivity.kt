@@ -1,13 +1,10 @@
 package com.example.sistemasdeboletosaereos.Login
 
-import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
 import android.text.TextUtils
-import android.text.TextWatcher
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.EditText
@@ -18,10 +15,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import java.lang.ref.Reference
-import java.net.Authenticator
 import java.util.*
 import android.widget.Spinner
+import com.google.firebase.auth.FirebaseAuthException
 
 
 class RegistroActivity : AppCompatActivity() {
@@ -75,9 +71,6 @@ class RegistroActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
     }
 
     data class AreaCode(val code: String, val country: String) {
@@ -120,7 +113,7 @@ class RegistroActivity : AppCompatActivity() {
     fun Registro(view: View){
         if (TextUtils.isEmpty(txtContraseña.getText().toString()) ||TextUtils.isEmpty(txtNombre.getText().toString()) ||TextUtils.isEmpty(txtFechaNacimiento.getText().toString()) ||TextUtils.isEmpty(txtTelefono.getText().toString()) ||TextUtils.isEmpty(txtCorreo.getText().toString()) ){
             Toast.makeText(this, "Por favor, completa todos los campos", Toast.LENGTH_SHORT).show();
-        }else creacionCuenta()
+        }else createAccount()
 
     }
     private fun esCorreoValido(correo: String): Boolean {
@@ -132,40 +125,50 @@ class RegistroActivity : AppCompatActivity() {
     }
 
 
-    private fun creacionCuenta(){
+
+    private fun createAccount() {
         val nombre:String=txtNombre.text.toString()
         val correo:String=txtCorreo.text.toString()
         val contraseña:String=txtContraseña.text.toString()
         val telefono:String=txtTelefono.text.toString()
         val fecha:String=txtFechaNacimiento.text.toString()
-        if (!TextUtils.isEmpty(nombre)&&!TextUtils.isEmpty(correo)&&!TextUtils.isEmpty(contraseña)&&!TextUtils.isEmpty(telefono)&&!TextUtils.isEmpty(fecha))
-        {
-            progressBar.visibility= View.VISIBLE
 
-            if (esCorreoValido(correo)) {
-                FirebaseAuth.getInstance().createUserWithEmailAndPassword(correo, contraseña)
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            val user:FirebaseUser?=auth.currentUser
-                            verificacionCorreo(user)
-                            val userBD= user?.uid?.let { dbReference.child(it) }
-                            userBD?.child("nombre")?.setValue(correo)
-                            Toast.makeText(this, correo, Toast.LENGTH_SHORT).show();
-                            accion()
-                        } else {
-                            // Ocurrió un error al crear el usuario
-                            Toast.makeText(this, "error al crear el usuario", Toast.LENGTH_LONG).show()
-                        }
-                    }
-            } else {
-                // Mostrar un mensaje de error al usuario sobre el formato de correo electrónico no válido
-                Toast.makeText(this, "formato de correo electrónico no válido", Toast.LENGTH_LONG).show()
-
-            }
-
-
+        if (!isValidEmail(correo)) {
+            Toast.makeText(this, "La dirección de correo electrónico no es válida.", Toast.LENGTH_SHORT).show()
+            return
         }
 
+        auth.createUserWithEmailAndPassword(correo, contraseña)
+            .addOnCompleteListener(this) { task ->
+                if (task.isSuccessful) {
+                    val user:FirebaseUser?=auth.currentUser
+                    verificacionCorreo(user)
+                    esCorreoValido(correo)
+                    val userBD= user?.uid?.let { dbReference.child(it) }
+                    userBD?.child("nombre")?.setValue(nombre)
+                    userBD?.child("telefono")?.setValue(telefono)
+                    userBD?.child("fecha")?.setValue(fecha)
+                    Toast.makeText(this, "Cuenta creada exitosamente.", Toast.LENGTH_SHORT).show()
+                    accion()
+                }else {
+                    val errorCode = (task.exception as FirebaseAuthException).errorCode
+                    when (errorCode) {
+                        "ERROR_WEAK_PASSWORD" -> Toast.makeText(
+                            this,
+                            "La contraseña debe tener al menos 6 caracteres.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        else -> Toast.makeText(
+                            this,
+                            "Error al crear la cuenta.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+    }
+    private fun isValidEmail(correo: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(correo).matches()
     }
     private fun accion(){
         startActivity(Intent(this,LoginActivity::class.java))
@@ -177,7 +180,7 @@ class RegistroActivity : AppCompatActivity() {
                 if (task.isComplete){
                     Toast.makeText(this, "Correo Enviado", Toast.LENGTH_LONG).show()
                 }else{
-                    Toast.makeText(this, "Error al enciar el correo", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, "Error al enviar el correo", Toast.LENGTH_LONG).show()
                 }
 
             }
