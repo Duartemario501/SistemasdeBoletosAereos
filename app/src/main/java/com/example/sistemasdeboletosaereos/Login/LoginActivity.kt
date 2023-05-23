@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun forgot_password(view: View) {
-        Toast.makeText(this, "Error en la autentificacion", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this,Reset_contrase::class.java))
 
     }
 
@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val user:String=txtuser.text.toString()
         val password:String=txtContraseña.text.toString()
         if (!isValidEmail(user)) {
-            Toast.makeText(this, "La dirección de correo electrónico no es válida.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "La dirección de correo electrónico no es válida.", Toast.LENGTH_LONG).show()
             return
         }
 

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
-    <uses-permission android:name="android.permission.INTERNET" />
 
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -14,15 +14,17 @@
         android:theme="@style/Theme.SistemasdeBoletosAereos"
         tools:targetApi="31">
         <activity
+            android:name=".Login.Reset_contrase"
+            android:exported="false"
+            android:label="Recuperación de contraseña" />
+        <activity
             android:name=".Login.LoginActivity"
             android:exported="false"
-            android:label="Inicio de sesion"/>
-
+            android:label="Inicio de sesion" />
         <activity
             android:name=".Login.RegistroActivity"
             android:exported="false"
-            android:label=""/>
-        />
+            android:label="" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 

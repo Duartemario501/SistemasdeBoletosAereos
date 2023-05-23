@@ -155,7 +155,7 @@ class RegistroActivity : AppCompatActivity() {
                     when (errorCode) {
                         "ERROR_WEAK_PASSWORD" -> Toast.makeText(
                             this,
-                            "La contraseña debe tener al menos 6 caracteres.",
+                            "La contraseña debe tener 6 caracteres.",
                             Toast.LENGTH_SHORT
                         ).show()
                         else -> Toast.makeText(

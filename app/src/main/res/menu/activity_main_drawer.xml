@@ -16,5 +16,10 @@
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"
             android:title="@string/menu_slideshow" />
+        <item
+            android:id="@+id/nav_cerrar"
+            android:icon="@android:drawable/ic_lock_power_off"
+            android:onClick="Cerrar"
+            android:title="Cerrar sesión" />
     </group>
 </menu>

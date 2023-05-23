@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.Login.RegistroActivity
 import com.example.sistemasdeboletosaereos.databinding.ActivityStartBinding
-
+import com.google.firebase.auth.FirebaseAuth
 
 
 /**
@@ -29,6 +29,7 @@ class Start : AppCompatActivity() {
     private lateinit var fullscreenContent: TextView
     private lateinit var fullscreenContentControls: LinearLayout
     private val hideHandler = Handler(Looper.myLooper()!!)
+    private lateinit var auth: FirebaseAuth
 
     @SuppressLint("InlinedApi")
     private val hidePart2Runnable = Runnable {
@@ -102,6 +103,18 @@ class Start : AppCompatActivity() {
                 startActivity(mainIntent)
                 finish()
             }, SPLASH_TIME_OUT.toLong())
+        auth = FirebaseAuth.getInstance()
+
+        val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+            val user = firebaseAuth.currentUser
+            if (user != null) {
+                // El usuario ya ha iniciado sesión, redirigirlo a la pantalla principal de la aplicación.
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+                finish()
+            }
+        }
+        auth.addAuthStateListener(authStateListener)
 
 
     }
