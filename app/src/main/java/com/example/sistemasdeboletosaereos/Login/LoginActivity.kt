@@ -41,7 +41,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun forgot_password(view: View) {
-        Toast.makeText(this, "Error en la autentificacion", Toast.LENGTH_LONG).show()
+        startActivity(Intent(this,Reset_contrase::class.java))
 
     }
 
