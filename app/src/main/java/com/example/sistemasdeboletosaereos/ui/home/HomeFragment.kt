@@ -7,6 +7,8 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.databinding.FragmentHomeBinding
 
 class HomeFragment : Fragment() {
@@ -27,10 +29,10 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
-        val textView: TextView = binding.textHome
-        homeViewModel.text.observe(viewLifecycleOwner) {
-            textView.text = it
+        val bundle = Bundle()
+        bundle.putString("arg", "VALOR")
+        binding.cardComprarVuelo.setOnClickListener {
+            findNavController().navigate(R.id.nav_compra_vuelo, bundle)
         }
         return root
     }

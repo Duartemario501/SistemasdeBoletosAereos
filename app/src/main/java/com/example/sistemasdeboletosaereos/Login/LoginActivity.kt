@@ -61,7 +61,7 @@ class LoginActivity : AppCompatActivity() {
         val user:String=txtuser.text.toString()
         val password:String=txtContraseña.text.toString()
         if (!isValidEmail(user)) {
-            Toast.makeText(this, "La dirección de correo electrónico no es válida.", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "La dirección de correo electrónico no es válida.", Toast.LENGTH_LONG).show()
             return
         }
 
@@ -74,11 +74,11 @@ class LoginActivity : AppCompatActivity() {
                 } else {
                     val errorCode = (task.exception as FirebaseAuthException).errorCode
                     when (errorCode) {
-                        "ERROR_WRONG_PASSWORD" -> Toast.makeText(this, "Contraseña incorrecta.", Toast.LENGTH_SHORT).show()
-                        "ERROR_USER_NOT_FOUND" -> Toast.makeText(this, "Usuario no encontrado.", Toast.LENGTH_SHORT).show()
-                        else -> Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_SHORT).show()
+                        "ERROR_WRONG_PASSWORD" -> Toast.makeText(this, "Contraseña incorrecta.", Toast.LENGTH_LONG).show()
+                        "ERROR_USER_NOT_FOUND" -> Toast.makeText(this, "Usuario no encontrado.", Toast.LENGTH_LONG).show()
+                        else -> Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_LONG).show()
                     }
-                    Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_LONG).show()
                 }
             }
     }
