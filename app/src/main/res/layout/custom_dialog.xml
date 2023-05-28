@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="10dp">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerHorizontal="true"
+        android:src="@drawable/icon_home_viajes" />
+
+    <TextView
+        android:id="@+id/txtDescripcionVuelo"
+        android:layout_width="400dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imageView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:padding="10dp"
+        android:text="Vuelo"
+        android:textAlignment="center"
+        android:textSize="12sp"/>
+    <TextView
+        android:id="@+id/txtPrecio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtDescripcionVuelo"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:textColor="#4CAF50"
+        android:padding="10dp"
+        android:text="$200"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/editCantidad"
+        android:layout_width="120dp"
+        android:layout_height="50dp"
+        android:inputType="number"
+        android:digits="1234567890"
+        android:layout_below="@+id/txtPrecio"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/custom_input"
+        android:drawableStart="@drawable/ic_calc"
+        android:paddingStart="8dp"
+        android:hint="Cantidad"
+        android:textAlignment="center"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/txtTotal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editCantidad"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:textColor="#4C7CAF"
+        android:padding="10dp"
+        android:text="$200"
+        android:textAlignment="center"
+        android:textSize="20sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnCompra"
+        android:layout_width="wrap_content"
+        android:layout_height="34dp"
+        android:layout_below="@id/txtTotal"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/custom_button_second"
+        android:text="Comprar"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="10sp"
+        app:backgroundTint="@android:color/holo_blue_dark"
+        app:icon="@drawable/ic_shop"
+        app:layout_constraintBottom_toBottomOf="parent" />
+</RelativeLayout>

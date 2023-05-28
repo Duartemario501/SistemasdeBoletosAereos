@@ -34,7 +34,7 @@
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintHorizontal_bias="0.938"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.046" />
@@ -49,7 +49,6 @@
         android:background="@drawable/custom_input"
         android:dropDownWidth="match_parent"
         android:padding="12dp"
-        android:popupBackground="@drawable/ic_form_aerolineas"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editText_name" />
@@ -59,7 +58,7 @@
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
-        android:background="@drawable/custom_button"
+        android:background="@drawable/custom_button_second"
         android:text="Buscar"
         android:textColor="@color/white"
         android:textSize="14sp"
@@ -69,11 +68,10 @@
         app:layout_constraintTop_toBottomOf="@+id/spnPais" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_width="0dp"
+        android:id="@+id/rv_vuelos_encontrados"
+        android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
