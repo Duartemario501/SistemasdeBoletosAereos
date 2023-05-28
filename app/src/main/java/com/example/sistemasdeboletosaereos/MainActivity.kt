@@ -68,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun Cerrar(item: MenuItem) {
+    fun action_settings(item: MenuItem) {
         auth.signOut()
         accion()
 

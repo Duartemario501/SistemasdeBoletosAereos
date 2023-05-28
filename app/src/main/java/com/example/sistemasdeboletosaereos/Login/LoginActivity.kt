@@ -33,6 +33,7 @@ class LoginActivity : AppCompatActivity() {
         progressBar=findViewById(R.id.barra)
         auth= FirebaseAuth.getInstance()
 
+
     }
 
 
@@ -46,13 +47,16 @@ class LoginActivity : AppCompatActivity() {
     }
 
     fun Ingresar(view: View) {
-
+        val user:String=txtuser.text.toString()
+        val password:String=txtContraseña.text.toString()
         progressBar.visibility = view.visibility
-        signIn()
-
-
-
+        if (user.isEmpty() || password.isEmpty()) {
+            Toast.makeText(this, "Por favor ingrese su usuario y contraseña.", Toast.LENGTH_LONG).show()
+        } else {
+            signIn()
+        }
     }
+
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
@@ -68,9 +72,25 @@ class LoginActivity : AppCompatActivity() {
         auth.signInWithEmailAndPassword(user, password)
             .addOnCompleteListener(this) { task ->
                 if (task.isSuccessful) {
-
-                    Toast.makeText(this, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
-                    Accion()
+                    val currentUser = auth.currentUser
+                    if (currentUser == null) {
+                        Toast.makeText(this, "Cuenta no verificada", Toast.LENGTH_LONG).show()
+                        // Redirigir al usuario a LoginActivity si no está autenticado
+                    } else {
+                        currentUser.reload().addOnCompleteListener { task ->
+                            if (task.isSuccessful) {
+                                val isVerified = currentUser.isEmailVerified
+                                if (isVerified) {
+                                    Toast.makeText(this, "Inicio de sesión exitoso.", Toast.LENGTH_SHORT).show()
+                                    Accion()
+                                } else {
+                                    Toast.makeText(this, "Cuenta no verificada", Toast.LENGTH_LONG).show()
+                                }
+                            } else {
+                                Toast.makeText(this, "Error al verificar la cuenta", Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
                 } else {
                     val errorCode = (task.exception as FirebaseAuthException).errorCode
                     when (errorCode) {
@@ -81,6 +101,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_LONG).show()
                 }
             }
+
     }
     fun isEmailValid(email: String): Boolean {
         val user:String=txtuser.toString()

@@ -84,28 +84,22 @@ class RegistroActivity : AppCompatActivity() {
         AreaCode("+44", "Reino Unido"),
         AreaCode("+503", "El Salvador"),
     )
-
-
-
-
     private fun showDatePickerDialog() {
         val calendar = Calendar.getInstance()
-        val year = calendar.get(Calendar.YEAR)
-        val month = calendar.get(Calendar.MONTH)
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val año = calendar.get(Calendar.YEAR)
+        val mes = calendar.get(Calendar.MONTH)
+        val día = calendar.get(Calendar.DAY_OF_MONTH)
 
         val datePickerDialog = DatePickerDialog(
             this,
             { _, selectedYear, selectedMonth, selectedDay ->
                 val selectedDate = "$selectedDay/${selectedMonth + 1}/$selectedYear"
                 txtFechaNacimiento.setText(selectedDate)
-
             },
-            year,
-            month,
-            day
+            año,
+            mes,
+            día
         )
-
         datePickerDialog.show()
     }
 
