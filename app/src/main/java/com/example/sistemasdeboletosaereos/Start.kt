@@ -114,7 +114,7 @@ class Start : AppCompatActivity() {
                 finish()
             }
         }
-        auth.addAuthStateListener(authStateListener)
+
 
 
     }
