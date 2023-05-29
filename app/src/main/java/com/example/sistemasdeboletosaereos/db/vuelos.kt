@@ -29,7 +29,6 @@ data class VuelosEntity(
     val origen: String,
     val destino: String,
     val fecha_salida: String,
-    val fecha_llegada: String,
-
+    val fecha_llegada: String
 
 )

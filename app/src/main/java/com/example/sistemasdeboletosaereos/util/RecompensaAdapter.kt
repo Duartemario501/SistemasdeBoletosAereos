@@ -2,31 +2,27 @@ package com.example.sistemasdeboletosaereos.util
 
 import android.app.Dialog
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.google.android.material.snackbar.Snackbar
 
-class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: Int ) : RecyclerView.Adapter<VueloAdapter.VueloViewHolder>() {
+class RecompensaAdapter(private var vuelos: List<VuelosEntity>): RecyclerView.Adapter<RecompensaAdapter.RecompensaViewHolder>() {
 
     var context: Context? = null
-    inner class VueloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class RecompensaViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val logo: ImageView = itemView.findViewById(R.id.logoIv)
         val titleTv: TextView = itemView.findViewById(R.id.titleTv)
         val langDescTv: TextView = itemView.findViewById(R.id.langDesc)
-        val price : TextView = itemView.findViewById(R.id.txtPrice)
+//        val price : TextView = itemView.findViewById(R.id.txtPrice)
         val constraintLayout: ConstraintLayout = itemView.findViewById(R.id.constraintLayout)
 
         fun collapseExpandedView(){
@@ -37,38 +33,33 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
         this.vuelos = vuelos
         notifyDataSetChanged()
     }
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VueloViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecompensaViewHolder {
         var view : View? = null
 
-        if(version == 1) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        }else{
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_vuelo, parent, false)
-        }
+        view = LayoutInflater.from(parent.context).inflate(R.layout.item_recompensa, parent, false)
 
         context = parent.context
-        return VueloViewHolder(view)
+        return RecompensaViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: VueloViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: RecompensaViewHolder, position: Int) {
 
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
-        holder.titleTv.text = vuelo.destino
-        holder.langDescTv.text = "El vuelo esta agendando desde " +
-                 vuelo.fecha_salida + " hasta " + vuelo.fecha_llegada
-        holder.price.text = "$150.00"
-        val isExpandable: Boolean = true
-        holder.langDescTv.visibility = if (isExpandable) View.VISIBLE else View.GONE
-
-        holder.constraintLayout.setOnClickListener {
-            notifyItemChanged(position , Unit)
-        }
+//        holder.titleTv.text = vuelo.destino
+        holder.langDescTv.text = "Puede obtener un descuento del 50% en un vuelo a " + vuelo.destino +
+                "\nNo aplica para dias feriados"
+        holder.titleTv.text = "Por solo 1000 puntos"
+        holder.langDescTv.visibility = View.VISIBLE
+//        holder.constraintLayout.setOnClickListener {
+//            vuelo.isExpandable = !vuelo.isExpandable
+//            notifyItemChanged(position , Unit)
+//        }
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
             Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
             val dialog : Dialog = Dialog(holder.itemView.context)
             dialog.setContentView(R.layout.custom_dialog)
-            val total:  TextView = dialog.findViewById<View>(R.id.txtTotal) as TextView
+            val total: TextView = dialog.findViewById<View>(R.id.txtTotal) as TextView
 //            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
             val btnComprar : Button = dialog.findViewById<View>(R.id.btnCompra) as Button
 
@@ -94,7 +85,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 //                }
 //
 //            })
-            val descVuelo:  TextView = dialog.findViewById<View>(R.id.txtDescripcionVuelo) as TextView
+            val descVuelo: TextView = dialog.findViewById<View>(R.id.txtDescripcionVuelo) as TextView
             descVuelo.setText("El vuelo desde "+ vuelo.origen+" hacia "+vuelo.destino+" esta agendando desde " +
                     vuelo.fecha_salida + " hasta " + vuelo.fecha_llegada)
 
@@ -120,7 +111,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 //    }
 
     override fun onBindViewHolder(
-        holder: VueloViewHolder,
+        holder: RecompensaViewHolder,
         position: Int,
         payloads: MutableList<Any>
     ) {

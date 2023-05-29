@@ -38,7 +38,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/editCantidad"
+        android:id="@+id/editAsiento"
         android:layout_width="120dp"
         android:layout_height="50dp"
         android:inputType="number"
@@ -47,17 +47,31 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
         android:background="@drawable/custom_input"
-        android:drawableStart="@drawable/ic_calc"
         android:paddingStart="8dp"
-        android:hint="Cantidad"
+        android:hint="Numero de Asiento"
         android:textAlignment="center"
         android:textSize="14sp" />
+
+<!--    <EditText-->
+<!--        android:id="@+id/editCantidad"-->
+<!--        android:layout_width="120dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:inputType="number"-->
+<!--        android:digits="1234567890"-->
+<!--        android:layout_below="@+id/editAsiento"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:background="@drawable/custom_input"-->
+<!--        android:paddingStart="8dp"-->
+<!--        android:hint="Cantidad"-->
+<!--        android:textAlignment="center"-->
+<!--        android:textSize="14sp" />-->
 
     <TextView
         android:id="@+id/txtTotal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/editCantidad"
+        android:layout_below="@id/editAsiento"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="16dp"
         android:textColor="#4C7CAF"
@@ -70,7 +84,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnCompra"
         android:layout_width="wrap_content"
-        android:layout_height="34dp"
+        android:layout_height="36dp"
         android:layout_below="@id/txtTotal"
         android:layout_centerHorizontal="true"
         android:background="@drawable/custom_button_second"

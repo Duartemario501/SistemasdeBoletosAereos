@@ -12,11 +12,6 @@
         tools:layout="@layout/fragment_home" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.example.sistemasdeboletosaereos.ui.slideshow.SlideshowFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
-    <fragment
         android:id="@+id/nav_compra_vuelo"
         android:name="com.example.sistemasdeboletosaereos.ui.compra.CompraVueloFragment"
         android:label="Comprar Vuelo"
@@ -26,4 +21,14 @@
         android:name="com.example.sistemasdeboletosaereos.ui.user.UserFragment"
         android:label="Perfil"
         tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/nav_recompensa"
+        android:name="com.example.sistemasdeboletosaereos.ui.recompensa.RecompensaFragment"
+        android:label="Recompensa"
+        tools:layout="@layout/fragment_recompensa" />
+    <fragment
+        android:id="@+id/nav_vuelos"
+        android:name="com.example.sistemasdeboletosaereos.ui.vuelo.VuelosFragment"
+        android:label="Mis Vuelos"
+        tools:layout="@layout/fragment_vuelos" />
 </navigation>

@@ -31,9 +31,22 @@ class HomeFragment : Fragment() {
         val root: View = binding.root
         val bundle = Bundle()
         bundle.putString("arg", "VALOR")
+
+        //COMPRAR VUELOS
         binding.cardComprarVuelo.setOnClickListener {
             findNavController().navigate(R.id.nav_compra_vuelo, bundle)
         }
+
+        //MIS VUELOS
+        binding.cardMisVuelos.setOnClickListener {
+            findNavController().navigate(R.id.nav_vuelos)
+        }
+
+        //RECOMPENSAS
+        binding.cardRecompensas.setOnClickListener {
+            findNavController().navigate(R.id.nav_recompensa)
+        }
+
         return root
     }
 
