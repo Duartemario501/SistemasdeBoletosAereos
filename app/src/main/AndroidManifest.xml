@@ -14,6 +14,9 @@
         android:theme="@style/Theme.SistemasdeBoletosAereos"
         tools:targetApi="31">
         <activity
+            android:name=".util.Admin"
+            android:exported="false" />
+        <activity
             android:name=".botaero.Chat"
             android:exported="false" />
         <activity
