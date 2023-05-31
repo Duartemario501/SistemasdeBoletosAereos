@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
                                     // Obtener el rol del usuario actual desde la Realtime Database
                                     val uid = currentUser.uid
                                     val db = FirebaseDatabase.getInstance()
-                                    val userRef = db.getReference("users").child(uid)
+                                    val userRef = db.getReference("User").child(uid)
                                     userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                                             val role = dataSnapshot.child("role").getValue(String::class.java)
