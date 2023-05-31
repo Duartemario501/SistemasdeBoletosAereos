@@ -67,7 +67,7 @@ class LoginActivity : AppCompatActivity() {
 
             // Función para obtener el rol de un usuario a partir de su UID
             fun getUserRole(uid: String, callback: (String?) -> Unit) {
-                val ref = FirebaseDatabase.getInstance().getReference("user").child(uid)
+                val ref = FirebaseDatabase.getInstance().getReference("users").child(uid)
                 ref.addListenerForSingleValueEvent(object : ValueEventListener {
                     override fun onDataChange(snapshot: DataSnapshot) {
                         val user = snapshot.getValue(User::class.java)
@@ -99,7 +99,6 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-
     private fun isValidEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
@@ -130,15 +129,14 @@ class LoginActivity : AppCompatActivity() {
                                     // Obtener el rol del usuario actual desde la Realtime Database
                                     val uid = currentUser.uid
                                     val db = FirebaseDatabase.getInstance()
-                                    val userRef = db.getReference("user").child(uid)
-
+                                    val userRef = db.getReference("User").child(uid)
                                     userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                         override fun onDataChange(dataSnapshot: DataSnapshot) {
                                             val role = dataSnapshot.child("role").getValue(String::class.java)
                                             // Redirigir al usuario a la pantalla correspondiente en función de su rol
                                             when (role) {
-                                                "Admin" -> AccionAdmin()
-                                                "Usuario" -> AccionUsuario()
+                                                "admin" -> AccionAdmin()
+                                                "usuario" -> AccionUsuario()
                                                 else -> Toast.makeText(
                                                     this@LoginActivity,
                                                     "Rol no válido.",
@@ -211,6 +209,9 @@ class LoginActivity : AppCompatActivity() {
         }
 
 
+
+    }
+    private fun rol(){
 
     }
 
