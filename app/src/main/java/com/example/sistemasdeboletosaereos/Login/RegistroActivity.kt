@@ -17,6 +17,7 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
 import java.util.*
 import android.widget.Spinner
+import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.google.firebase.auth.FirebaseAuthException
 
 
@@ -31,12 +32,15 @@ class RegistroActivity : AppCompatActivity() {
     private lateinit var dbReference: DatabaseReference
     private lateinit var database: FirebaseDatabase
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbLocal: DBHelper
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_registro)
+
+        dbLocal = DBHelper(this)
         txtContraseña=findViewById(R.id.TxtContraseña)
         txtCorreo=findViewById(R.id.txtCorreo)
         txtNombre=findViewById(R.id.txtNombre)
@@ -143,6 +147,9 @@ class RegistroActivity : AppCompatActivity() {
                     userBD?.child("telefono")?.setValue(telefono)
                     userBD?.child("fecha")?.setValue(fecha)
                     Toast.makeText(this, "Cuenta creada exitosamente.", Toast.LENGTH_SHORT).show()
+                    //AGREGANDO USUARIO EN BASE LOCAL
+                    dbLocal.anyadirDatopasajero(dbLocal.getLastIdUsuario(), nombre, fecha, user?.uid!!)
+
                     accion()
                 }else {
                     val errorCode = (task.exception as FirebaseAuthException).errorCode

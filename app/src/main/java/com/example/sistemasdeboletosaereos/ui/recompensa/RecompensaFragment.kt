@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.databinding.FragmentRecompensaBinding
 import com.example.sistemasdeboletosaereos.databinding.FragmentVuelosBinding
+import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.example.sistemasdeboletosaereos.util.RecompensaAdapter
 import com.example.sistemasdeboletosaereos.util.VueloAdapter
@@ -36,16 +37,32 @@ class RecompensaFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentRecompensaBinding.inflate(inflater, container, false)
         val root: View = binding.root
-
+        val db = DBHelper(requireContext())
         activity?.actionBar?.hide()
 
         val rvVuelos = binding.rvVuelosEncontrados
         rvVuelos.setHasFixedSize(true)
         rvVuelos.layoutManager = GridLayoutManager(requireContext(), 2, GridLayoutManager.VERTICAL, false);
-        addVuelos()
+        // VUELOS DISPONIBLES SEGUN BUSQUEDA
+        val vuelosCursor = db.getVuelos()
+
+        if(vuelosCursor?.moveToFirst()== true){
+            do {
+                var vuelo: VuelosEntity = VuelosEntity(
+                    vuelosCursor.getString(0), vuelosCursor.getString(1), vuelosCursor.getString(2),
+                    vuelosCursor.getString(3), vuelosCursor.getString(4), vuelosCursor.getString(5),
+                    vuelosCursor.getString(6), vuelosCursor.getString(7), vuelosCursor.getString(8),
+                    vuelosCursor.getString(9), vuelosCursor.getString(10), vuelosCursor.getString(11),
+                    vuelosCursor.getString(12), vuelosCursor.getString(12)
+                )
+                vuelos.add(vuelo)
+            }while (vuelosCursor.moveToNext())
+
+        }
         val adapter = RecompensaAdapter(vuelos)
         rvVuelos.adapter = adapter
 
+        binding.tvPuntos.setText("Tienes " + db.getPuntosByUser("1") + " puntos")
         return root
     }
 
@@ -64,22 +81,22 @@ class RecompensaFragment : Fragment() {
     }
 
     private fun addVuelos(){
-        vuelos.add(
-            VuelosEntity(1, 1,
-                "EL SALVADOR", "COSTA RICA",
-                "25/05/2023", "05/06/2023")
-        )
-
-        vuelos.add(
-            VuelosEntity(1, 1,
-                "EL SALVADOR", "GUATEMALA",
-                "31/05/2023", "05/06/2023")
-        )
-
-        vuelos.add(
-            VuelosEntity(1, 1,
-                "EL SALVADOR", "Mexico",
-                "31/05/2023", "05/06/2023")
-        )
+//        vuelos.add(
+//            VuelosEntity(1, 1,
+//                "EL SALVADOR", "COSTA RICA",
+//                "25/05/2023", "05/06/2023")
+//        )
+//
+//        vuelos.add(
+//            VuelosEntity(1, 1,
+//                "EL SALVADOR", "GUATEMALA",
+//                "31/05/2023", "05/06/2023")
+//        )
+//
+//        vuelos.add(
+//            VuelosEntity(1, 1,
+//                "EL SALVADOR", "Mexico",
+//                "31/05/2023", "05/06/2023")
+//        )
     }
 }

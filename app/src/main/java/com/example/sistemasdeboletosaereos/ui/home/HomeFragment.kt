@@ -1,6 +1,7 @@
 package com.example.sistemasdeboletosaereos.ui.home
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.databinding.FragmentHomeBinding
+import com.example.sistemasdeboletosaereos.db.DBHelper
+import com.google.firebase.auth.FirebaseAuth
 
 class HomeFragment : Fragment() {
 
@@ -29,8 +32,16 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val auth = FirebaseAuth.getInstance()
         val bundle = Bundle()
         bundle.putString("arg", "VALOR")
+
+        Log.i("SESION-USER", "USUARIO EN SESION: " + auth.currentUser?.uid!!)
+        //INIT DB
+        val db = DBHelper(requireContext());
+        if(db.getVuelos()?.moveToFirst() == false){
+            db.llenarDB()
+        }
 
         //COMPRAR VUELOS
         binding.cardComprarVuelo.setOnClickListener {
