@@ -46,7 +46,7 @@
                 android:id="@+id/titleTv"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:text="Language"
+                android:text="DESTINO"
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -75,7 +75,7 @@
             android:layout_marginEnd="4dp"
             android:layout_marginBottom="4dp"
             android:background="@drawable/custom_button_second"
-            android:text="Ver Boleto"
+            android:text="Boleto"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="10sp"
@@ -88,11 +88,29 @@
             app:layout_constraintTop_toBottomOf="@id/langDesc"
             app:layout_constraintVertical_bias="0.0" />
 
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnCancelar"
+            android:layout_width="wrap_content"
+            android:layout_height="34dp"
+            android:layout_marginEnd="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="@drawable/custom_button_second"
+            android:text="Cancelar"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            app:backgroundTint="@android:color/holo_blue_dark"
+            app:icon="@drawable/ic_boleto"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/langDesc" />
+
         <TextView
             android:id="@+id/txtPrice"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="Language"
+            android:text="PRECIO"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"

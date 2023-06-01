@@ -65,7 +65,21 @@ class CompraVueloFragment : Fragment() {
             val rvVuelos = binding.rvVuelosEncontrados
             rvVuelos.setHasFixedSize(true)
             rvVuelos.layoutManager = LinearLayoutManager(requireContext())
-//                addVuelos()
+
+            val vuelosCursor = db.getVuelos()
+            if(vuelosCursor?.moveToFirst()== true){
+                do {
+                    var vuelo: VuelosEntity = VuelosEntity(
+                        vuelosCursor.getString(0), vuelosCursor.getString(1), vuelosCursor.getString(2),
+                        vuelosCursor.getString(3), vuelosCursor.getString(4), vuelosCursor.getString(5),
+                        vuelosCursor.getString(6), vuelosCursor.getString(7), vuelosCursor.getString(8),
+                        vuelosCursor.getString(9), vuelosCursor.getString(10), vuelosCursor.getString(11),
+                        vuelosCursor.getString(12), vuelosCursor.getString(13)
+                    )
+                    vuelos.add(vuelo)
+                }while (vuelosCursor.moveToNext())
+
+            }
             val adapter = VueloAdapter(vuelos, 1)
             rvVuelos.adapter = adapter
 
@@ -84,7 +98,7 @@ class CompraVueloFragment : Fragment() {
                             vuelosCursor.getString(3), vuelosCursor.getString(4), vuelosCursor.getString(5),
                             vuelosCursor.getString(6), vuelosCursor.getString(7), vuelosCursor.getString(8),
                             vuelosCursor.getString(9), vuelosCursor.getString(10), vuelosCursor.getString(11),
-                            vuelosCursor.getString(12), vuelosCursor.getString(12)
+                            vuelosCursor.getString(12), vuelosCursor.getString(13)
                         )
                         vuelos.add(vuelo)
                     }while (vuelosCursor.moveToNext())

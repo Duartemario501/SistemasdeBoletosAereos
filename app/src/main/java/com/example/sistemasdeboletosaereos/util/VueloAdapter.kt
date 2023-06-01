@@ -58,7 +58,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
         val db = DBHelper(holder.itemView.context)
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
-        holder.titleTv.text = vuelo.destino
+        holder.titleTv.text = vuelo.destino + " ("+vuelo.estado+") "
         holder.langDescTv.text = vuelo.descripcion + ". Esta agendando desde " +
                  vuelo.fecha_salida + " hasta " + vuelo.fecha_regreso
         holder.price.text = "$" + vuelo.precio
@@ -67,6 +67,19 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
         holder.constraintLayout.setOnClickListener {
             notifyItemChanged(position , Unit)
+        }
+
+        if(version == 2){
+            val btnCancel : Button = holder.itemView.findViewById(R.id.btnCancelar)
+            btnCancel.setOnClickListener {
+                Snackbar.make(
+                    holder.itemView,
+                    db.cancelarVuelo(vuelo.reservacion),
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+                vuelo.estado = "CNC"
+                this.notifyItemChanged(position)
+            }
         }
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
             Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
@@ -79,7 +92,6 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
             if(version == 2){
                 asiento.setText(db.getAsiento(db.getIdUsuarioByUid(auth.uid!!), vuelo.id))
             }
-
             //Deshabilitado hasta implementar compras de varios vuelos
 //            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
 //            cantidad.setText("1")
