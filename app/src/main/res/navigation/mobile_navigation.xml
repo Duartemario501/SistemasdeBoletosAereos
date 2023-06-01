@@ -31,4 +31,6 @@
         android:name="com.example.sistemasdeboletosaereos.ui.vuelo.VuelosFragment"
         android:label="Mis Vuelos"
         tools:layout="@layout/fragment_vuelos" />
+
+
 </navigation>

@@ -24,7 +24,7 @@
             android:ems="10"
             android:inputType="textPersonName"
             android:padding="10dp"
-            android:hint="Enter your message"
+            android:hint="Escriba su mensaje"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/btnSend"
             app:layout_constraintStart_toStartOf="parent"
@@ -43,17 +43,17 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/chatView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:id="@+id/chatView"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:layout_marginStart="16dp"
         android:orientation="vertical"
-        tools:listitem="@layout/adapter_message_one"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintBottom_toTopOf="@id/constraintLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
         app:stackFromEnd="true"
         tools:itemCount="2"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/constraintLayout"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteY="1dp" />
+        tools:listitem="@layout/adapter_message_one" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
