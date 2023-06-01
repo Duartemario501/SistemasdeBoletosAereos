@@ -56,11 +56,11 @@ class Chat : AppCompatActivity() {
                 addMessageToList(message, false)
                 sendMessageToBot(message)
             } else {
-                Toast.makeText(this@Chat, "Please enter text!", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this@Chat, "Por favor introduzca su mensaje", Toast.LENGTH_SHORT).show()
             }
         }
 
-        //initialize bot config
+        //Inicializando la configuracion del bot
         setUpBot()
     }
 
@@ -125,7 +125,7 @@ class Chat : AppCompatActivity() {
         if (botReply.isNotEmpty()) {
             addMessageToList(botReply, true)
         } else {
-            Toast.makeText(this, "something went wrong", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, "Algo salio mal!", Toast.LENGTH_SHORT).show()
         }
     }
 }

@@ -146,6 +146,7 @@ class RegistroActivity : AppCompatActivity() {
                     userBD?.child("nombre")?.setValue(nombre)
                     userBD?.child("telefono")?.setValue(telefono)
                     userBD?.child("fecha")?.setValue(fecha)
+                    userBD?.child("role")?.setValue("usuario")
                     Toast.makeText(this, "Cuenta creada exitosamente.", Toast.LENGTH_SHORT).show()
                     //AGREGANDO USUARIO EN BASE LOCAL
                     dbLocal.anyadirDatopasajero(dbLocal.getLastIdUsuario(), nombre, fecha, user?.uid!!)

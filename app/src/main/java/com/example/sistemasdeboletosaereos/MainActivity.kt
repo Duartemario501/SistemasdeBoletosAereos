@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,9 +14,12 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
+import com.example.sistemasdeboletosaereos.botaero.Chat
 import com.example.sistemasdeboletosaereos.databinding.ActivityMainBinding
 import com.example.sistemasdeboletosaereos.util.Admin
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
@@ -61,6 +65,8 @@ class MainActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
 
+        val chatbttn = findViewById<FloatingActionButton>(R.id.fab)
+        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, Chat::class.java))})
 
     }
     private fun accion(){
