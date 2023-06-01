@@ -46,10 +46,9 @@ class RecompensaAdapter(private var vuelos: List<VuelosEntity>): RecyclerView.Ad
 
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
+        holder.titleTv.text = "Por solo "+ vuelo.precio.toDouble()*10 +" puntos"
 //        holder.titleTv.text = vuelo.destino
-        holder.langDescTv.text = "Puede obtener un descuento del 50% en un vuelo a " + vuelo.destino +
-                "\nNo aplica para dias feriados"
-        holder.titleTv.text = "Por solo 1000 puntos"
+        holder.langDescTv.text = vuelo.descripcion
         holder.langDescTv.visibility = View.VISIBLE
 //        holder.constraintLayout.setOnClickListener {
 //            vuelo.isExpandable = !vuelo.isExpandable
@@ -58,43 +57,7 @@ class RecompensaAdapter(private var vuelos: List<VuelosEntity>): RecyclerView.Ad
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
             Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
             val dialog : Dialog = Dialog(holder.itemView.context)
-            dialog.setContentView(R.layout.custom_dialog)
-            val total: TextView = dialog.findViewById<View>(R.id.txtTotal) as TextView
-//            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
-            val btnComprar : Button = dialog.findViewById<View>(R.id.btnCompra) as Button
-
-//            cantidad.setText("1")
-//            cantidad.addTextChangedListener(object : TextWatcher{
-//                override fun beforeTextChanged(value: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                    Log.i("BEFORECHANGE", "beforeTextChanged: " + value.toString())
-//                }
-//
-//                override fun onTextChanged(value: CharSequence?, p1: Int, p2: Int, p3: Int) {
-//                    Log.i("CANTIDAD-MODIFICADA", "new val: " + value.toString())
-//                }
-//
-//                override fun afterTextChanged(value: Editable?) {
-//                    Log.i("AFTERCHANGE", "beforeTextChanged: " + value.toString())
-//                    var totalCompra = 0
-//                    if(value.toString().equals("") || value == null) {
-//                        totalCompra = 0
-//                    }else{
-//                        totalCompra = value.toString().toInt() * 100
-//                    }
-//                    total.setText("$"+ totalCompra)
-//                }
-//
-//            })
-            val descVuelo: TextView = dialog.findViewById<View>(R.id.txtDescripcionVuelo) as TextView
-            descVuelo.setText("El vuelo desde "+ vuelo.origen+" hacia "+vuelo.destino+" esta agendando desde " +
-                    vuelo.fecha_salida + " hasta " + vuelo.fecha_llegada)
-
-            btnComprar.setOnClickListener {
-//                Toast.makeText(context, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Toast.LENGTH_LONG)
-                Snackbar.make(holder.itemView, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                dialog.dismiss()
-            }
+            dialog.setContentView(R.layout.dialog_recompensa)
             dialog.show()
         }
 

@@ -21,10 +21,11 @@ import java.util.Date
 )
 data class RutasEntity(
 
-    @ColumnInfo(name = "id_Ruta")
-    val id_Recompensas: Int,
-    @ColumnInfo(name = "id_Vuelo")
-    val id_Vuelo: Int,
-    @ColumnInfo(name = "precio")
-    val precio: Int
+    @ColumnInfo(name = "id")
+    val id: Int,
+    @ColumnInfo(name = "origen")
+    val origen: String,
+    @ColumnInfo(name = "destino")
+    val destino: String
+
 )

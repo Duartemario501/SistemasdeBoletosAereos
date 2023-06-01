@@ -16,12 +16,15 @@ import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistemasdeboletosaereos.R
+import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.auth.FirebaseAuth
 
 class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: Int ) : RecyclerView.Adapter<VueloAdapter.VueloViewHolder>() {
 
     var context: Context? = null
+    val auth = FirebaseAuth.getInstance()
     inner class VueloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val logo: ImageView = itemView.findViewById(R.id.logoIv)
         val titleTv: TextView = itemView.findViewById(R.id.titleTv)
@@ -52,12 +55,13 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
     override fun onBindViewHolder(holder: VueloViewHolder, position: Int) {
 
+        val db = DBHelper(holder.itemView.context)
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
         holder.titleTv.text = vuelo.destino
-        holder.langDescTv.text = "El vuelo esta agendando desde " +
-                 vuelo.fecha_salida + " hasta " + vuelo.fecha_llegada
-        holder.price.text = "$150.00"
+        holder.langDescTv.text = vuelo.descripcion + ". Esta agendando desde " +
+                 vuelo.fecha_salida + " hasta " + vuelo.fecha_regreso
+        holder.price.text = "$" + vuelo.precio
         val isExpandable: Boolean = true
         holder.langDescTv.visibility = if (isExpandable) View.VISIBLE else View.GONE
 
@@ -68,10 +72,16 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
             Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
             val dialog : Dialog = Dialog(holder.itemView.context)
             dialog.setContentView(R.layout.custom_dialog)
-            val total:  TextView = dialog.findViewById<View>(R.id.txtTotal) as TextView
-//            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
-            val btnComprar : Button = dialog.findViewById<View>(R.id.btnCompra) as Button
+            val total:  TextView = dialog.findViewById(R.id.txtTotal)
+            val btnComprar : Button = dialog.findViewById(R.id.btnCompra)
+            val asiento : EditText = dialog.findViewById(R.id.editAsiento)
 
+            if(version == 2){
+                asiento.setText(db.getAsiento(db.getIdUsuarioByUid(auth.uid!!), vuelo.id))
+            }
+
+            //Deshabilitado hasta implementar compras de varios vuelos
+//            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
 //            cantidad.setText("1")
 //            cantidad.addTextChangedListener(object : TextWatcher{
 //                override fun beforeTextChanged(value: CharSequence?, p1: Int, p2: Int, p3: Int) {
@@ -96,13 +106,21 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 //            })
             val descVuelo:  TextView = dialog.findViewById<View>(R.id.txtDescripcionVuelo) as TextView
             descVuelo.setText("El vuelo desde "+ vuelo.origen+" hacia "+vuelo.destino+" esta agendando desde " +
-                    vuelo.fecha_salida + " hasta " + vuelo.fecha_llegada)
+                    vuelo.fecha_salida + " hasta " + vuelo.fecha_regreso)
 
             btnComprar.setOnClickListener {
 //                Toast.makeText(context, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Toast.LENGTH_LONG)
+                val idUser = db.getIdUsuarioByUid(auth.uid!!)
+                db.anyadirDatoreservacion(
+                    db.getLastIdReservacion(),vuelo.id, idUser
+                    , vuelo.tarifa, asiento.text.toString(), "ACT"
+                )
+                db.anyadirDatoprograma_fidelizacion(db.getLastIdPuntos(), idUser, "500")
+
                 Snackbar.make(holder.itemView, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
                 dialog.dismiss()
+
             }
             dialog.show()
         }

@@ -2,10 +2,12 @@ package com.example.sistemasdeboletosaereos.db
 
 import android.content.ContentValues
 import android.content.Context
+import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.util.Log
 
-class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaereo.db", null, 1) {
+class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaereo.s3db", null, 1) {
     override fun onCreate(db: SQLiteDatabase?) {
         val aerolinea="CREATE TABLE aerolinea ("+
                 "    id INT PRIMARY KEY,"+
@@ -27,7 +29,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
                 "    avion_id INT,"+
                 "    fecha_salida DATE,"+
                 "    hora_salida TIME,"+
+                "    fecha_regreso DATE,"+
                 "    duracion INT,"+
+                "    descripcion VARCHAR(255),"+
                 "    FOREIGN KEY (aerolinea_id) REFERENCES aerolinea(id),"+
                 "    FOREIGN KEY (ruta_id) REFERENCES ruta(id),"+
                 "    FOREIGN KEY (avion_id) REFERENCES avion(id)"+
@@ -89,6 +93,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db!!.execSQL(avion)
         db!!.execSQL(ruta)
 
+        Log.i("INIT-DB", "BASE CREADA")
+
     }
 
     override fun onUpgrade(db: SQLiteDatabase?, oldVersion: Int, newVersion: Int) {
@@ -114,6 +120,65 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db!!.execSQL(avion)
         db!!.execSQL(ruta)
         onCreate(db)
+    }
+
+    fun llenarDB(){
+        val db = this.writableDatabase
+        db.execSQL("INSERT INTO aerolinea\n" +
+                "(id, nombre)\n" +
+                "VALUES(1, 'AVIANCA')")
+
+        db.execSQL("INSERT INTO ruta\n" +
+                "(id, origen, destino)\n" +
+                "VALUES(1, 'EL SALVADOR', 'MEXICO')")
+
+        db.execSQL("INSERT INTO ruta\n" +
+                "(id, origen, destino)\n" +
+                "VALUES(2, 'EL SALVADOR', 'COSTA RICA')")
+
+        db.execSQL("INSERT INTO ruta\n" +
+                "(id, origen, destino)\n" +
+                "VALUES(3, 'EL SALVADOR', 'COLOMBIA')")
+
+        db.execSQL("INSERT INTO avion\n" +
+                "(id, modelo)\n" +
+                "VALUES(1, 'A320')")
+
+        db.execSQL("INSERT INTO vuelo\n" +
+                "(id, aerolinea_id, ruta_id, avion_id, fecha_salida, hora_salida, duracion, descripcion, fecha_regreso)\n" +
+                "VALUES(1, 1, 1, 1, '31/05/2023', '20:00:00', 2, 'Vuelo directo, primera clase', '07/06/2023')")
+
+        db.execSQL("INSERT INTO vuelo\n" +
+                "(id, aerolinea_id, ruta_id, avion_id, fecha_salida, hora_salida, duracion, descripcion, fecha_regreso)\n" +
+                "VALUES(2, 1, 2, 1, '31/05/2023', '20:00:00', 2, 'Vuelo directo, clase turista', '07/06/2023')")
+
+        db.execSQL("INSERT INTO vuelo\n" +
+                "(id, aerolinea_id, ruta_id, avion_id, fecha_salida, hora_salida, duracion, descripcion, fecha_regreso)\n" +
+                "VALUES(3, 1, 3, 1, '31/05/2023', '20:00:00', 2, 'Vuelo con escala en PANAMA, clase turista', '07/06/2023')")
+
+        db.execSQL("INSERT INTO vuelo\n" +
+                "(id, aerolinea_id, ruta_id, avion_id, fecha_salida, hora_salida, duracion, descripcion, fecha_regreso)\n" +
+                "VALUES(4, 1, 3, 1, '31/05/2023', '20:00:00', 2, 'Vuelo sin escalas, primera clase', '07/06/2023')")
+
+        db.execSQL("INSERT INTO tarifa\n" +
+                "(id, vuelo_id, clase, precio, capacidad_clase)\n" +
+                "VALUES(1, 1, 'A', 500, 50)")
+
+        db.execSQL("INSERT INTO tarifa\n" +
+                "(id, vuelo_id, clase, precio, capacidad_clase)\n" +
+                "VALUES(2, 2, 'A', 400, 50)")
+
+        db.execSQL("INSERT INTO tarifa\n" +
+                "(id, vuelo_id, clase, precio, capacidad_clase)\n" +
+                "VALUES(3, 3, 'A', 300, 50)")
+
+        db.execSQL("INSERT INTO tarifa\n" +
+                "(id, vuelo_id, clase, precio, capacidad_clase)\n" +
+                "VALUES(4, 4, 'A', 450, 50)")
+
+        db.execSQL("INSERT INTO pasajero\n" +
+                "(id, nombre, fecha_nacimiento, numero_pasaporte)\n" +
+                "VALUES(1, 'Mauricio', '', 'AD85')")
     }
     fun anyadirDatoaerolinea(id: String, nombre: String, ) {
         val datosaerolinea = ContentValues()
@@ -145,7 +210,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
     }
 
 
-   fun anyadirDatovuelo(id: String, aerolinea_id: String, ruta_id: String, avion_id: String, fecha_salida: String, hora_salida: String, duracion: String, ) {
+   fun anyadirDatovuelo(id: String, aerolinea_id: String, ruta_id: String, avion_id: String, fecha_salida: String, hora_salida: String, fecha_regreso: String,
+                        descripcion: String, duracion: String, precio: Double) {
         val datosvuelo = ContentValues()
         datosvuelo.put("id", id)
         datosvuelo.put("aerolinea_id", aerolinea_id)
@@ -153,6 +219,8 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         datosvuelo.put("avion_id", avion_id)
         datosvuelo.put("fecha_salida", fecha_salida)
         datosvuelo.put("hora_salida", hora_salida)
+        datosvuelo.put("fecha_regreso", fecha_regreso)
+        datosvuelo.put("descripcion", descripcion)
         datosvuelo.put("duracion", duracion)
         val db = this.writableDatabase
         db.insert("vuelo", null, datosvuelo)
@@ -231,5 +299,102 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db.close()
     }
 
+    //CONSULTAS VISTA USUARIO
 
+    fun getVuelos(): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT v.*, t.precio, t.id, t.clase, r.origen, r.destino " +
+                "FROM vuelo v \n" +
+                "inner join ruta r ON v.ruta_id = r.id \n" +
+                "inner join avion a on v.avion_id = a.id \n" +
+                "INNER JOIN tarifa t ON v.id = t.vuelo_id \n", null, null)
+
+        return vuelos
+    }
+    fun getDestinos(): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT * FROM ruta r ", null, null)
+
+        return vuelos
+    }
+
+    fun buscarVuelos(destino: String, precioDesde: String, precioHasta: String): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT v.*, t.precio, t.id, t.clase, r.origen, r.destino " +
+                "FROM vuelo v \n" +
+                "inner join ruta r ON v.ruta_id = r.id \n" +
+                "inner join avion a on v.avion_id = a.id \n" +
+                "INNER JOIN tarifa t ON v.id = t.vuelo_id \n" +
+                "WHERE r.id = ? AND t.precio BETWEEN ? AND ?", arrayOf(destino, precioDesde, precioHasta), null)
+
+        return vuelos
+    }
+
+    fun getVuelosByUser(user: String): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT \n" +
+                "\tv.*, t.precio, t.clase, r.origen, r.destino, re.id \n" +
+                "FROM reservacion re \n" +
+                "INNER JOIN vuelo v ON re.vuelo_id = v.id  \n" +
+                "inner join ruta r ON v.ruta_id = r.id \n" +
+                "inner join avion a on v.avion_id = a.id \n" +
+                "INNER JOIN tarifa t ON v.id = t.vuelo_id \n" +
+                "WHERE re.pasajero_id = ?", arrayOf(user), null)
+
+        return vuelos
+    }
+
+    fun getLastIdReservacion(): String {
+        val db = readableDatabase
+        val idre = db.rawQuery("SELECT IFNULL(MAX(id),0) FROM reservacion r  ", null, null)
+        idre.moveToFirst()
+        val id = idre.getInt(0)+1
+        return id.toString()
+    }
+
+    fun getLastIdPuntos(): String {
+        val db = readableDatabase
+        val idre = db.rawQuery("SELECT IFNULL(MAX(id),0) FROM programa_fidelizacion pf  ", null, null)
+        idre.moveToFirst()
+        val id = idre.getInt(0)+1
+        return id.toString()
+    }
+
+    fun getPuntosByUser(user: String): String {
+        val db = readableDatabase
+        val puntos = db.rawQuery("SELECT IFNULL(SUM(puntos),0) FROM programa_fidelizacion pf " +
+                "WHERE pasajero_id = '" + user + "'", null, null)
+        puntos.moveToFirst()
+        return puntos.getString(0)
+    }
+
+    fun getLastIdUsuario(): String {
+        val db = readableDatabase
+        val idre = db.rawQuery("SELECT IFNULL(MAX(id),0) FROM pasajero p ", null, null)
+        idre.moveToFirst()
+        val id = idre.getInt(0)+1
+        return id.toString()
+    }
+
+    fun getIdUsuarioByUid(uid: String): String {
+        val db = readableDatabase
+        val idre = db.rawQuery("SELECT IFNULL(id,0) FROM pasajero p WHERE numero_pasaporte = ?", arrayOf(uid), null)
+        var id : Int = 0
+        if(idre.moveToFirst()){
+            id = idre.getInt(0)
+        }
+        return id.toString()
+    }
+    fun getAsiento(user: String, vuelo_id: String): String {
+        val db = readableDatabase
+        val idre = db.rawQuery("SELECT asiento FROM reservacion r\n" +
+                "WHERE pasajero_id = ? AND vuelo_id = ? \n" +
+                "ORDER BY id\n" +
+                "LIMIT 1", arrayOf(user,vuelo_id), null)
+        var id : Int = 0
+        if(idre.moveToFirst()){
+            id = idre.getInt(0)
+        }
+        return id.toString()
+    }
 }

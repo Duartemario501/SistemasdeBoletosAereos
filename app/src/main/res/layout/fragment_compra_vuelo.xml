@@ -7,13 +7,15 @@
     tools:context=".ui.compra.CompraVueloFragment">
 
     <EditText
-        android:id="@+id/editText_name"
+        android:id="@+id/editText_precio_desde"
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/ic_form_aerolineas"
         android:hint="Precio Desde"
         android:paddingEnd="16dp"
+        android:inputType="number"
+        android:digits="1234567890"
         android:textSize="14sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -23,9 +25,11 @@
         app:layout_constraintVertical_bias="0.047" />
 
     <EditText
-        android:id="@+id/editText_pais_origen"
+        android:id="@+id/editText_precio_hasta"
         android:layout_width="150dp"
         android:layout_height="50dp"
+        android:inputType="number"
+        android:digits="1234567890"
         android:background="@drawable/custom_input"
         android:drawableStart="@drawable/ic_form_aerolineas"
         android:drawablePadding="12dp"
@@ -39,22 +43,39 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.046" />
 
-    <Spinner
+<!--    <Spinner-->
+<!--        android:id="@+id/spnPais"-->
+<!--        android:layout_width="0dp"-->
+<!--        android:layout_height="50dp"-->
+<!--        android:layout_marginStart="16dp"-->
+<!--        android:layout_marginTop="16dp"-->
+<!--        android:layout_marginEnd="16dp"-->
+<!--        android:background="@drawable/custom_input"-->
+<!--        android:dropDownWidth="match_parent"-->
+<!--        android:padding="12dp"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/editText_name" />-->
+
+    <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/spnPais"
-        android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:background="@drawable/custom_input"
-        android:dropDownWidth="match_parent"
-        android:padding="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Pais Destino"
+        android:layout_margin="16dp"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editText_name" />
+        app:layout_constraintTop_toBottomOf="@+id/editText_precio_desde">
+        <AutoCompleteTextView
+            android:id="@+id/dropdown_menu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none"/>
+    </com.google.android.material.textfield.TextInputLayout>
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/appCompatButton"
+        android:id="@+id/btn_search"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:layout_marginTop="24dp"
@@ -75,6 +96,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/appCompatButton" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_search" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

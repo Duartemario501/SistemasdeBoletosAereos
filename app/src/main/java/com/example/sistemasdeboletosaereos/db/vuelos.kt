@@ -22,13 +22,20 @@ import java.util.Date
 )
 data class VuelosEntity(
 
-    @ColumnInfo(name = "id_vuelos")
-    val id_Vuelo: Int,
-    @ColumnInfo(name = "id_aerolineas")
-    val id_aerolineas: Int,
+    val id: String,
+    val aerolinea_id: String,
+    val ruta_id: String,
+    val avion_id: String,
+    val fecha_salida: String,
+    val hora_salida: String,
+    val fecha_regreso: String,
+    val duracion: String,
+    val descripcion: String,
+    val precio: String,
+    val tarifa: String,
+    val clase: String,
     val origen: String,
     val destino: String,
-    val fecha_salida: String,
-    val fecha_llegada: String
+    val reservacion: String = ""
 
 )
