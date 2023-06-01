@@ -20,6 +20,7 @@ import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.example.sistemasdeboletosaereos.util.RecompensaAdapter
 import com.example.sistemasdeboletosaereos.util.VueloAdapter
+import com.google.firebase.auth.FirebaseAuth
 
 class RecompensaFragment : Fragment() {
     private var _binding: FragmentRecompensaBinding? = null
@@ -37,6 +38,7 @@ class RecompensaFragment : Fragment() {
         // Inflate the layout for this fragment
         _binding = FragmentRecompensaBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        val auth = FirebaseAuth.getInstance()
         val db = DBHelper(requireContext())
         activity?.actionBar?.hide()
 
@@ -62,7 +64,7 @@ class RecompensaFragment : Fragment() {
         val adapter = RecompensaAdapter(vuelos)
         rvVuelos.adapter = adapter
 
-        binding.tvPuntos.setText("Tienes " + db.getPuntosByUser("1") + " puntos")
+        binding.tvPuntos.setText("Tienes " + db.getPuntosByUser(db.getIdUsuarioByUid(auth.uid!!)) + " puntos")
         return root
     }
 

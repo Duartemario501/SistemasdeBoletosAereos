@@ -110,7 +110,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
             btnComprar.setOnClickListener {
 //                Toast.makeText(context, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Toast.LENGTH_LONG)
-                val idUser = db.getIdUsuarioByUid(auth.currentUser?.uid!!)
+                val idUser = db.getIdUsuarioByUid(auth.uid!!)
                 db.anyadirDatoreservacion(
                     db.getLastIdReservacion(),vuelo.id, idUser
                     , vuelo.tarifa, asiento.text.toString(), "ACT"
