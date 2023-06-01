@@ -60,7 +60,7 @@
             android:text="Nombre" />
 
         <EditText
-            android:id="@+id/editTextAerolineaNombre"
+            android:id="@+id/textPersonName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
