@@ -18,6 +18,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
 import com.example.sistemasdeboletosaereos.databinding.ActivityMainBinding
+import com.example.sistemasdeboletosaereos.extra.MapsActivity
+import com.example.sistemasdeboletosaereos.extra.QR
 import com.example.sistemasdeboletosaereos.util.Admin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -53,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_user
+                R.id.nav_qr, R.id.nav_ubi
             ), drawerLayout
         )
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -67,6 +69,13 @@ class MainActivity : AppCompatActivity() {
 
         val chatbttn = findViewById<FloatingActionButton>(R.id.fab)
         chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, Chat::class.java))})
+
+        val qrbttn = findNavController(R.id.nav_qr)
+        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, QR::class.java))})
+
+        val ubibttn = findNavController(R.id.nav_ubi)
+        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MapsActivity::class.java))})
+
 
     }
     private fun accion(){
