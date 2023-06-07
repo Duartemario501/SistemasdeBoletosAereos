@@ -12,6 +12,7 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.sistemasdeboletosaereos.MainActivity
 import com.example.sistemasdeboletosaereos.R
+import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.example.sistemasdeboletosaereos.util.Admin
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
@@ -28,11 +29,13 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtuser: EditText
     private lateinit var txtNombre: EditText
     private lateinit var auth: FirebaseAuth
+    private lateinit var dbLocal: DBHelper
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+        dbLocal = DBHelper(this)
 
         txtContraseña=findViewById(R.id.password)
         txtuser=findViewById(R.id.username)
@@ -132,6 +135,10 @@ class LoginActivity : AppCompatActivity() {
                                     val userRef = db.getReference("User").child(uid)
                                     userRef.addListenerForSingleValueEvent(object : ValueEventListener {
                                         override fun onDataChange(dataSnapshot: DataSnapshot) {
+                                            //AGREGANDO USUARIO EN BASE LOCAL
+                                            Log.i("VALIDACION", "USUARIO NEW: " + dbLocal.getIdUsuarioByUid(currentUser.uid!!).equals("0"))
+                                            if(dbLocal.getIdUsuarioByUid(currentUser.uid!!).equals("0"))
+                                                dbLocal.anyadirDatopasajero(dbLocal.getLastIdUsuario(), user, "", currentUser.uid!!)
                                             val role = dataSnapshot.child("role").getValue(String::class.java)
                                             // Redirigir al usuario a la pantalla correspondiente en función de su rol
                                             when (role) {

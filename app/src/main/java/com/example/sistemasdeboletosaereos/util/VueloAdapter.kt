@@ -2,8 +2,6 @@ package com.example.sistemasdeboletosaereos.util
 
 import android.app.Dialog
 import android.content.Context
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -12,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistemasdeboletosaereos.R
@@ -21,10 +18,12 @@ import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 
+
 class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: Int ) : RecyclerView.Adapter<VueloAdapter.VueloViewHolder>() {
 
     var context: Context? = null
     val auth = FirebaseAuth.getInstance()
+
     inner class VueloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val logo: ImageView = itemView.findViewById(R.id.logoIv)
         val titleTv: TextView = itemView.findViewById(R.id.titleTv)
@@ -43,6 +42,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VueloViewHolder {
         var view : View? = null
 
+
         if(version == 1) {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
         }else{
@@ -51,14 +51,19 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
         context = parent.context
         return VueloViewHolder(view)
+
+
     }
+
+
+
 
     override fun onBindViewHolder(holder: VueloViewHolder, position: Int) {
 
         val db = DBHelper(holder.itemView.context)
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
-        holder.titleTv.text = vuelo.destino
+        holder.titleTv.text = vuelo.destino + " ("+vuelo.estado+") "
         holder.langDescTv.text = vuelo.descripcion + ". Esta agendando desde " +
                  vuelo.fecha_salida + " hasta " + vuelo.fecha_regreso
         holder.price.text = "$" + vuelo.precio
@@ -67,6 +72,19 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
         holder.constraintLayout.setOnClickListener {
             notifyItemChanged(position , Unit)
+        }
+
+        if(version == 2){
+            val btnCancel : Button = holder.itemView.findViewById(R.id.btnCancelar)
+            btnCancel.setOnClickListener {
+                Snackbar.make(
+                    holder.itemView,
+                    db.cancelarVuelo(vuelo.reservacion),
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+                vuelo.estado = "CNC"
+                this.notifyItemChanged(position)
+            }
         }
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
             Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
@@ -79,7 +97,6 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
             if(version == 2){
                 asiento.setText(db.getAsiento(db.getIdUsuarioByUid(auth.uid!!), vuelo.id))
             }
-
             //Deshabilitado hasta implementar compras de varios vuelos
 //            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
 //            cantidad.setText("1")
@@ -120,6 +137,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
                 Snackbar.make(holder.itemView, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Snackbar.LENGTH_LONG)
                     .setAction("Action", null).show()
                 dialog.dismiss()
+
 
             }
             dialog.show()

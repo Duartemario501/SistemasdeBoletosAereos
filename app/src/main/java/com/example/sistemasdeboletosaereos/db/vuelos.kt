@@ -36,6 +36,7 @@ data class VuelosEntity(
     val clase: String,
     val origen: String,
     val destino: String,
-    val reservacion: String = ""
+    val reservacion: String = "",
+    var estado: String = "ACT"
 
 )

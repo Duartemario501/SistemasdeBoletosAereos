@@ -175,10 +175,10 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db.execSQL("INSERT INTO tarifa\n" +
                 "(id, vuelo_id, clase, precio, capacidad_clase)\n" +
                 "VALUES(4, 4, 'A', 450, 50)")
-
-        db.execSQL("INSERT INTO pasajero\n" +
-                "(id, nombre, fecha_nacimiento, numero_pasaporte)\n" +
-                "VALUES(1, 'Mauricio', '', 'AD85')")
+//
+//        db.execSQL("INSERT INTO pasajero\n" +
+//                "(id, nombre, fecha_nacimiento, numero_pasaporte)\n" +
+//                "VALUES(1, 'Mauricio', '', 'AD85')")
     }
     fun anyadirDatoaerolinea(id: String, nombre: String, ) {
         val datosaerolinea = ContentValues()
@@ -333,7 +333,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
     fun getVuelosByUser(user: String): Cursor? {
         val db = readableDatabase
         val vuelos = db.rawQuery("SELECT \n" +
-                "\tv.*, t.precio, t.clase, r.origen, r.destino, re.id \n" +
+                "\tv.*, t.precio, t.id, t.clase, r.origen, r.destino, re.id, re.estado \n" +
                 "FROM reservacion re \n" +
                 "INNER JOIN vuelo v ON re.vuelo_id = v.id  \n" +
                 "inner join ruta r ON v.ruta_id = r.id \n" +
@@ -396,5 +396,12 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
             id = idre.getInt(0)
         }
         return id.toString()
+    }
+
+    fun cancelarVuelo(id: String): String {
+        val db = writableDatabase
+
+        db.execSQL("UPDATE reservacion SET estado = 'CNC' WHERE id = '" + id + "'")
+        return "Vuelo cancelado"
     }
 }
