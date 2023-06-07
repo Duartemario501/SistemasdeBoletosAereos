@@ -1,6 +1,12 @@
 package com.example.sistemasdeboletosaereos
 
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
 import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -89,4 +95,30 @@ class MainActivity : AppCompatActivity() {
         accion()
 
     }
+    fun showNotification() {
+        val channelId = "my_channel_id"
+        val notificationId = 1
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId, "Mi canal", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = "Descripción del canal"
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = Notification.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logoico) // Reemplaza 'ic_notification' con el nombre de tu ícono de notificación
+            .setContentTitle("Mi título")
+            .setContentText("Este es el contenido de la notificación")
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(notificationId, notification)
+    }
+
 }
