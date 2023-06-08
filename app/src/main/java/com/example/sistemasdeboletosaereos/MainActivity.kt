@@ -2,8 +2,6 @@ package com.example.sistemasdeboletosaereos
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.content.Context
-import android.content.Intent
 import android.content.pm.PackageManager
 import android.app.Notification
 import android.app.NotificationChannel
@@ -69,7 +67,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_qr, R.id.nav_ubi
+                R.id.nav_home, R.id.nav_qr, R.id.nav_ubi
             ), drawerLayout
         )
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -87,8 +85,8 @@ class MainActivity : AppCompatActivity() {
         val qrbttn = findNavController(R.id.nav_qr)
         chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, QR::class.java))})
 
-        val ubibttn = findNavController(R.id.nav_ubi)
-        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MapsActivity::class.java))})
+//        val ubibttn = findNavController(R.id.nav_ubi)
+//        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MapsActivity::class.java))})
 
 
     }

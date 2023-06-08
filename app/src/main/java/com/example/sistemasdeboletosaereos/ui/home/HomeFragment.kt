@@ -15,7 +15,7 @@ import com.example.sistemasdeboletosaereos.databinding.FragmentHomeBinding
 import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.google.firebase.auth.FirebaseAuth
 
-abstract class HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -49,7 +49,7 @@ abstract class HomeFragment : Fragment() {
             mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
         }
 
-        mediaPlayer.start()
+//        mediaPlayer.start()
 
         binding.fab2.setOnClickListener {
             if (mediaPlayer.isPlaying){
