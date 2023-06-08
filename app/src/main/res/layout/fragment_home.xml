@@ -184,11 +184,12 @@
             android:layout_marginStart="95dp"
             android:layout_marginTop="4dp"
             android:layout_marginEnd="55dp"
-            android:contentDescription="Play"
+            android:contentDescription="@string/playstop"
             android:src="@mipmap/ic_play_foreground"
             app:layout_constraintBottom_toTopOf="@+id/linearLayout1"
             app:layout_constraintEnd_toStartOf="@+id/imageView"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

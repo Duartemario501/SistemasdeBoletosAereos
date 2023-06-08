@@ -42,5 +42,8 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="cerrar_sesion">Cerrar sesion</string>
+    <string name="Ubicacion">Nuestra ubicacion</string>
+    <string name="Escanea">Escanea tu boleto</string>
+    <string name="playstop">Play/Stop</string>
 
 </resources>

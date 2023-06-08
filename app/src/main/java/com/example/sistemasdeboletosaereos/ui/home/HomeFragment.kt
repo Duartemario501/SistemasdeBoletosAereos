@@ -30,7 +30,7 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -52,8 +52,14 @@ class HomeFragment : Fragment() {
 //        mediaPlayer.start()
 
         binding.fab2.setOnClickListener {
+
+            if (!this::mediaPlayer.isInitialized){
+                mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
+            }
+
             if (mediaPlayer.isPlaying){
                 mediaPlayer.pause()
+                mediaPlayer.seekTo(0)
                 return@setOnClickListener
             }
 
@@ -80,10 +86,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
 
-        if(this::mediaPlayer.isInitialized){
-            mediaPlayer.stop()
-            mediaPlayer.release()
-        }
+        
 
         super.onDestroyView()
         _binding = null

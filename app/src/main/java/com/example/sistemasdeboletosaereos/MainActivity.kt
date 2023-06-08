@@ -23,8 +23,6 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
@@ -49,8 +47,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
-        if(!checkPermissions(this))
-            requestPermission()
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -82,13 +79,6 @@ class MainActivity : AppCompatActivity() {
         val chatbttn = findViewById<FloatingActionButton>(R.id.fab)
         chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, Chat::class.java))})
 
-        val qrbttn = findNavController(R.id.nav_qr)
-        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, QR::class.java))})
-
-//        val ubibttn = findNavController(R.id.nav_ubi)
-//        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MapsActivity::class.java))})
-
-
     }
     private fun accion(){
         startActivity(Intent(this, LoginActivity::class.java))
@@ -105,57 +95,15 @@ class MainActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun action_settings(item: MenuItem) {
+    fun actionsettings(item: MenuItem) {
         auth.signOut()
         accion()
-
     }
-
-    //Metodo para verificar permisos de lectura y escritura de archivos
-    fun checkPermissions(context: Context): Boolean {
-
-        var writeStoragePermission = ContextCompat.checkSelfPermission(
-            context,
-            WRITE_EXTERNAL_STORAGE
-        )
-        var readStoragePermission = ContextCompat.checkSelfPermission(
-            context,
-            READ_EXTERNAL_STORAGE
-        )
-        return writeStoragePermission == PackageManager.PERMISSION_GRANTED
-                && readStoragePermission == PackageManager.PERMISSION_GRANTED
+    fun actionqr(item: MenuItem) {
+        startActivity(Intent(this, QR::class.java))
     }
-    // Metodo para solicitar permiso de lectura y escritura de archivos
-    fun requestPermission() {
-        ActivityCompat.requestPermissions(
-            this,
-            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), 101
-        )
-    }
-    fun showNotification() {
-        val channelId = "my_channel_id"
-        val notificationId = 1
-
-        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId, "Mi canal", NotificationManager.IMPORTANCE_DEFAULT).apply {
-                description = "Descripción del canal"
-                enableLights(true)
-                lightColor = Color.RED
-                enableVibration(true)
-            }
-            notificationManager.createNotificationChannel(channel)
-        }
-
-        val notification = Notification.Builder(this, channelId)
-            .setSmallIcon(R.drawable.logoico) // Reemplaza 'ic_notification' con el nombre de tu ícono de notificación
-            .setContentTitle("Mi título")
-            .setContentText("Este es el contenido de la notificación")
-            .setAutoCancel(true)
-            .build()
-
-        notificationManager.notify(notificationId, notification)
+    fun actionubi(item: MenuItem) {
+        startActivity(Intent(this, MapsActivity::class.java))
     }
 
 }
