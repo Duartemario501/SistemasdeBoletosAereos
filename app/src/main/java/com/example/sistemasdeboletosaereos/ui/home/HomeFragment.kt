@@ -15,7 +15,7 @@ import com.example.sistemasdeboletosaereos.databinding.FragmentHomeBinding
 import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.google.firebase.auth.FirebaseAuth
 
-abstract class HomeFragment : Fragment() {
+class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
@@ -30,7 +30,7 @@ abstract class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val homeViewModel =
-            ViewModelProvider(this).get(HomeViewModel::class.java)
+            ViewModelProvider(this)[HomeViewModel::class.java]
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
@@ -45,15 +45,15 @@ abstract class HomeFragment : Fragment() {
             db.llenarDB()
         }
 
-        if (!this::mediaPlayer.isInitialized){
-            mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
-        }
-
-        mediaPlayer.start()
-
         binding.fab2.setOnClickListener {
+
+            if (!this::mediaPlayer.isInitialized){
+                mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
+            }
+
             if (mediaPlayer.isPlaying){
                 mediaPlayer.pause()
+                mediaPlayer.seekTo(0)
                 return@setOnClickListener
             }
 
@@ -80,10 +80,7 @@ abstract class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
 
-        if(this::mediaPlayer.isInitialized){
-            mediaPlayer.stop()
-            mediaPlayer.release()
-        }
+        
 
         super.onDestroyView()
         _binding = null

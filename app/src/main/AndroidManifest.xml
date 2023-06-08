@@ -38,7 +38,7 @@
 
         <activity
             android:name=".extra.MapsActivity"
-            android:exported="true"
+            android:exported="false"
             android:label="Nuestra Ubicacion" />
         <activity
             android:name=".extra.QR"

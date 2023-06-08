@@ -7,10 +7,10 @@
         <item
             android:id="@+id/nav_qr"
             android:icon="@drawable/icon_home_aviones"
-            android:title="Escanea tu boleto" />
+            android:title="@string/Escanea" />
         <item
             android:id="@+id/nav_ubi"
             android:icon="@drawable/icon_user"
-            android:title="Nuestra Ubicacion" />
+            android:title="@string/Ubicacion" />
     </group>
 </menu>
