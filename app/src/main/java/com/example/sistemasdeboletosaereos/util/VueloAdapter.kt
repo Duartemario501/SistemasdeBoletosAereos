@@ -1,7 +1,20 @@
 package com.example.sistemasdeboletosaereos.util
 
+import android.Manifest
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Dialog
 import android.content.Context
+import android.content.pm.PackageManager
+import android.content.res.Resources
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Paint
+import android.graphics.Typeface
+import android.graphics.pdf.PdfDocument
+import android.os.Build
+import android.os.Environment
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,18 +26,31 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.example.sistemasdeboletosaereos.db.VuelosEntity
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
+import java.io.File
+import java.io.FileOutputStream
 
 class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: Int ) : RecyclerView.Adapter<VueloAdapter.VueloViewHolder>() {
 
     var context: Context? = null
     val auth = FirebaseAuth.getInstance()
+    // dimensiones de archivo pdf
+    var pageHeight = 1120
+    var pageWidth = 792
+
+    // Creando imagenes que tendra el pdf del boleto
+    lateinit var bmp: Bitmap
+    lateinit var logo: Bitmap
+    lateinit var qr: Bitmap
+
     inner class VueloViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val logo: ImageView = itemView.findViewById(R.id.logoIv)
         val titleTv: TextView = itemView.findViewById(R.id.titleTv)
@@ -82,11 +108,13 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
             }
         }
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
-            Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
+//            Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
             val dialog : Dialog = Dialog(holder.itemView.context)
             dialog.setContentView(R.layout.custom_dialog)
             val total:  TextView = dialog.findViewById(R.id.txtTotal)
             val btnComprar : Button = dialog.findViewById(R.id.btnCompra)
+            if(version == 2 )
+                btnComprar.setText("Imprimir")
             val asiento : EditText = dialog.findViewById(R.id.editAsiento)
 
             if(version == 2){
@@ -122,17 +150,46 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
             btnComprar.setOnClickListener {
 //                Toast.makeText(context, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Toast.LENGTH_LONG)
-                val idUser = db.getIdUsuarioByUid(auth.uid!!)
-                db.anyadirDatoreservacion(
-                    db.getLastIdReservacion(),vuelo.id, idUser
-                    , vuelo.tarifa, asiento.text.toString(), "ACT"
-                )
-                db.anyadirDatoprograma_fidelizacion(db.getLastIdPuntos(), idUser, "500")
+                if(version == 2){
+                    bmp = BitmapFactory.decodeResource(holder.itemView.resources, R.drawable.logoico)
+                    logo = Bitmap.createScaledBitmap(bmp, 140, 140, false)
+                    bmp = BitmapFactory.decodeResource(holder.itemView.resources, R.drawable.qr)
+                    qr = Bitmap.createScaledBitmap(bmp, 300, 300, false)
 
-                Snackbar.make(holder.itemView, "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show()
-                dialog.dismiss()
+                    val vueloEnc = "Su vuelo es de " + vuelo.origen + " hacia " + vuelo.destino
+                    val vueloHora = "Por favor debe estar antes de: " + vuelo.hora_salida
+                    val vueloDesc = "Informacion de su vuelo: "+  vuelo.descripcion
 
+                    if(checkPermissions(holder.itemView.context)){
+                        generatePDF(holder.itemView.context, vuelo.id, vueloEnc, vueloHora, vueloDesc)
+                    }else {
+                        Toast.makeText(
+                            context,
+                            "Para poder imprimir el boleto debe conceder los permisos",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                    }
+                }else {
+                    val idUser = db.getIdUsuarioByUid(auth.uid!!)
+                    db.anyadirDatoreservacion(
+                        db.getLastIdReservacion(),
+                        vuelo.id,
+                        idUser,
+                        vuelo.tarifa,
+                        asiento.text.toString(),
+                        "ACT"
+                    )
+                    db.anyadirDatoprograma_fidelizacion(db.getLastIdPuntos(), idUser, "500")
+
+                    Snackbar.make(
+                        holder.itemView,
+                        "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'",
+                        Snackbar.LENGTH_LONG
+                    )
+                        .setAction("Action", null).show()
+                    dialog.dismiss()
+                }
             }
             dialog.show()
         }
@@ -166,4 +223,91 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     override fun getItemCount(): Int {
         return vuelos.size
     }
+
+
+    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    fun generatePDF(context: Context, idBoleto: String, vueloEnc: String, vueloHora: String, vueloDesc: String) {
+        // Creando objeto PDF
+        var pdfDocument: PdfDocument = PdfDocument()
+
+        // Se crean dos variables para poder agregar contenido al archivo
+        // "paint" para imagen, "title" para texto
+        var paint: Paint = Paint()
+        var title: Paint = Paint()
+
+        // Se agrega la informacion del pdf que se creara
+        var myPageInfo: PdfDocument.PageInfo? =
+            PdfDocument.PageInfo.Builder(pageWidth, pageHeight, 1).create()
+
+        // Iniciamos la pagina del pdf
+        var myPage: PdfDocument.Page = pdfDocument.startPage(myPageInfo)
+
+        var canvas: Canvas = myPage.canvas
+
+        //Agregamos el logo de la app
+        canvas.drawBitmap(logo, 56F, 40F, paint)
+
+        title.setTypeface(Typeface.create(Typeface.DEFAULT, Typeface.NORMAL))
+
+        // Tamaño del texto par el encabezado
+        title.textSize = 20F
+        // color del encabezado
+        title.setColor(ContextCompat.getColor(context, R.color.second))
+
+        // Agregando el encabezado
+        canvas.drawText("Soar Inc.", 209F, 100F, title)
+        canvas.drawText("Boleto " + idBoleto, 209F, 80F, title)
+
+        title.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL))
+        //Color del contenido
+        title.setColor(ContextCompat.getColor(context, R.color.black))
+        // Tamaño del texto par el contenido
+        title.textSize = 15F
+
+        // Agregando el contenido
+        title.textAlign = Paint.Align.CENTER
+        canvas.drawText(vueloEnc, 396F, 330F, title)
+        canvas.drawText(vueloHora, 396F, 350F, title)
+        canvas.drawText(vueloDesc, 396F, 370F, title)
+
+        // Agreando codigo qr del boleto
+        canvas.drawBitmap(qr, 250F, 500F, paint)
+
+        //Cerramos o finalizamos el pdf
+        pdfDocument.finishPage(myPage)
+
+        // Definimos la ruta y archivo donde se guardara el archivo
+        val file: File = File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "boleto.pdf")
+
+        try {
+            // Escribimos el archivo
+            pdfDocument.writeTo(FileOutputStream(file))
+
+            // Indicamos al usuario que su bolote se guardo
+            Toast.makeText(context, "Puede encontrar su boleto en la carpeta Download", Toast.LENGTH_LONG).show()
+        } catch (e: Exception) {
+            e.printStackTrace()
+
+            // Indicamos al usuario que existe un error
+            Toast.makeText(context, "Problemas para generar imprimir su archivo", Toast.LENGTH_LONG).show()
+        }
+        // Cerramos el archivo para liberar la memoria
+        pdfDocument.close()
+    }
+
+    //Metodo para verificar permisos de lectura y escritura de archivos
+    fun checkPermissions(context: Context): Boolean {
+
+        var writeStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            WRITE_EXTERNAL_STORAGE
+        )
+        var readStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            READ_EXTERNAL_STORAGE
+        )
+        return writeStoragePermission == PackageManager.PERMISSION_GRANTED
+                && readStoragePermission == PackageManager.PERMISSION_GRANTED
+    }
+
 }

@@ -1,6 +1,10 @@
 package com.example.sistemasdeboletosaereos
 
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -14,6 +18,8 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
@@ -36,7 +42,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         auth = FirebaseAuth.getInstance()
-
+        if(!checkPermissions(this))
+            requestPermission()
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -88,5 +95,27 @@ class MainActivity : AppCompatActivity() {
         auth.signOut()
         accion()
 
+    }
+
+    //Metodo para verificar permisos de lectura y escritura de archivos
+    fun checkPermissions(context: Context): Boolean {
+
+        var writeStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            WRITE_EXTERNAL_STORAGE
+        )
+        var readStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            READ_EXTERNAL_STORAGE
+        )
+        return writeStoragePermission == PackageManager.PERMISSION_GRANTED
+                && readStoragePermission == PackageManager.PERMISSION_GRANTED
+    }
+    // Metodo para solicitar permiso de lectura y escritura de archivos
+    fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), 101
+        )
     }
 }

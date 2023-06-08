@@ -45,8 +45,7 @@ class VuelosFragment: Fragment() {
                     misVuelosCursor.getString(3), misVuelosCursor.getString(4), misVuelosCursor.getString(5),
                     misVuelosCursor.getString(6), misVuelosCursor.getString(7), misVuelosCursor.getString(8),
                     misVuelosCursor.getString(9), misVuelosCursor.getString(10), misVuelosCursor.getString(11),
-                    misVuelosCursor.getString(12), misVuelosCursor.getString(12), misVuelosCursor.getString(13),
-                    misVuelosCursor.getString(14)
+                    misVuelosCursor.getString(12), misVuelosCursor.getString(13), misVuelosCursor.getString(14)
                 )
                 vuelos.add(vuelo)
             }while (misVuelosCursor.moveToNext())
