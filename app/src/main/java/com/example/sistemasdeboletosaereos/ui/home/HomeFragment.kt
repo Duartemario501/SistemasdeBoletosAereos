@@ -1,5 +1,6 @@
 package com.example.sistemasdeboletosaereos.ui.home
 
+import android.media.MediaPlayer
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -14,13 +15,14 @@ import com.example.sistemasdeboletosaereos.databinding.FragmentHomeBinding
 import com.example.sistemasdeboletosaereos.db.DBHelper
 import com.google.firebase.auth.FirebaseAuth
 
-class HomeFragment : Fragment() {
+abstract class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
+    private lateinit var mediaPlayer: MediaPlayer
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,6 +45,21 @@ class HomeFragment : Fragment() {
             db.llenarDB()
         }
 
+        if (!this::mediaPlayer.isInitialized){
+            mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
+        }
+
+        mediaPlayer.start()
+
+        binding.fab2.setOnClickListener {
+            if (mediaPlayer.isPlaying){
+                mediaPlayer.pause()
+                return@setOnClickListener
+            }
+
+            mediaPlayer.start()
+        }
+
         //COMPRAR VUELOS
         binding.cardComprarVuelo.setOnClickListener {
             findNavController().navigate(R.id.nav_compra_vuelo, bundle)
@@ -62,6 +79,12 @@ class HomeFragment : Fragment() {
     }
 
     override fun onDestroyView() {
+
+        if(this::mediaPlayer.isInitialized){
+            mediaPlayer.stop()
+            mediaPlayer.release()
+        }
+
         super.onDestroyView()
         _binding = null
     }

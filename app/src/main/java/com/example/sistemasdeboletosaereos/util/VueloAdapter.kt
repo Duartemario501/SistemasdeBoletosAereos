@@ -38,6 +38,7 @@ import com.google.firebase.auth.FirebaseAuth
 import java.io.File
 import java.io.FileOutputStream
 
+
 class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: Int ) : RecyclerView.Adapter<VueloAdapter.VueloViewHolder>() {
 
     var context: Context? = null
@@ -69,6 +70,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VueloViewHolder {
         var view : View? = null
 
+
         if(version == 1) {
             view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
         }else{
@@ -77,7 +79,12 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
 
         context = parent.context
         return VueloViewHolder(view)
+
+
     }
+
+
+
 
     override fun onBindViewHolder(holder: VueloViewHolder, position: Int) {
 

@@ -5,6 +5,13 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.app.Notification
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.content.Intent
+import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
@@ -24,6 +31,8 @@ import androidx.navigation.fragment.findNavController
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
 import com.example.sistemasdeboletosaereos.databinding.ActivityMainBinding
+import com.example.sistemasdeboletosaereos.extra.MapsActivity
+import com.example.sistemasdeboletosaereos.extra.QR
 import com.example.sistemasdeboletosaereos.util.Admin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
@@ -60,7 +69,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_user
+                R.id.nav_qr, R.id.nav_ubi
             ), drawerLayout
         )
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -74,6 +83,13 @@ class MainActivity : AppCompatActivity() {
 
         val chatbttn = findViewById<FloatingActionButton>(R.id.fab)
         chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, Chat::class.java))})
+
+        val qrbttn = findNavController(R.id.nav_qr)
+        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, QR::class.java))})
+
+        val ubibttn = findNavController(R.id.nav_ubi)
+        chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, MapsActivity::class.java))})
+
 
     }
     private fun accion(){
@@ -118,4 +134,30 @@ class MainActivity : AppCompatActivity() {
             arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), 101
         )
     }
+    fun showNotification() {
+        val channelId = "my_channel_id"
+        val notificationId = 1
+
+        val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(channelId, "Mi canal", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                description = "Descripción del canal"
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = Notification.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logoico) // Reemplaza 'ic_notification' con el nombre de tu ícono de notificación
+            .setContentTitle("Mi título")
+            .setContentText("Este es el contenido de la notificación")
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(notificationId, notification)
+    }
+
 }
