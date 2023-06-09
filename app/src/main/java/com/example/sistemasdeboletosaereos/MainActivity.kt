@@ -22,20 +22,15 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.widget.Toolbar
-import androidx.navigation.fragment.findNavController
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
 import com.example.sistemasdeboletosaereos.databinding.ActivityMainBinding
 import com.example.sistemasdeboletosaereos.extra.MapsActivity
 import com.example.sistemasdeboletosaereos.extra.QR
-import com.example.sistemasdeboletosaereos.util.Admin
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
 
 
 class MainActivity : AppCompatActivity() {
@@ -43,6 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
+    val CHANNEL_ID = "SOAR_CHANNEL_1"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,6 +48,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setSupportActionBar(binding.appBarMain.toolbar)
+
+        if(!checkPermissions(this))
+            requestPermission()
+
+        createNotifChannel()
 
 //        binding.appBarMain.fab.setOnClickListener { view ->
 //            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.nav_home, R.id.nav_qr, R.id.nav_ubi
+                R.id.nav_home, R.id.nav_user
             ), drawerLayout
         )
 //        val toolbar = findViewById<Toolbar>(R.id.toolbar)
@@ -104,6 +105,69 @@ class MainActivity : AppCompatActivity() {
     }
     fun actionubi(item: MenuItem) {
         startActivity(Intent(this, MapsActivity::class.java))
+    }
+
+    //Metodo para verificar permisos de lectura y escritura de archivos
+    fun checkPermissions(context: Context): Boolean {
+
+        var writeStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            WRITE_EXTERNAL_STORAGE
+        )
+        var readStoragePermission = ContextCompat.checkSelfPermission(
+            context,
+            READ_EXTERNAL_STORAGE
+        )
+        return writeStoragePermission == PackageManager.PERMISSION_GRANTED
+                && readStoragePermission == PackageManager.PERMISSION_GRANTED
+    }
+    // Metodo para solicitar permiso de lectura y escritura de archivos
+    fun requestPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(READ_EXTERNAL_STORAGE, WRITE_EXTERNAL_STORAGE), 101
+        )
+    }
+    fun showNotification() {
+        val channelId = "soar_channel"
+        val notificationId = 1
+
+        val notificationManager =
+            getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(
+                channelId,
+                "Mi canal",
+                NotificationManager.IMPORTANCE_DEFAULT
+            ).apply {
+                description = "Descripción del canal"
+                enableLights(true)
+                lightColor = Color.RED
+                enableVibration(true)
+            }
+            notificationManager.createNotificationChannel(channel)
+        }
+
+        val notification = Notification.Builder(this, channelId)
+            .setSmallIcon(R.drawable.logoico) // Reemplaza 'ic_notification' con el nombre de tu ícono de notificación
+            .setContentTitle("Mi título")
+            .setContentText("Este es el contenido de la notificación")
+            .setAutoCancel(true)
+            .build()
+
+        notificationManager.notify(notificationId, notification)
+    }
+
+    private fun createNotifChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channel = NotificationChannel(CHANNEL_ID, "CHANNEL_SOAR", NotificationManager.IMPORTANCE_DEFAULT).apply {
+                lightColor = Color.BLUE
+                enableLights(true)
+            }
+            val manager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+            manager.createNotificationChannel(channel)
+        }
     }
 
 }

@@ -29,8 +29,6 @@
         android:id="@+id/edit_modelo"
         android:layout_width="match_parent"
         android:layout_height="50dp"
-        android:inputType="number"
-        android:digits="1234567890"
         android:layout_below="@+id/txt_title"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="24dp"
@@ -41,7 +39,7 @@
         android:textSize="14sp" />
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btnCompra"
+        android:id="@+id/btn_add_avion"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/edit_modelo"

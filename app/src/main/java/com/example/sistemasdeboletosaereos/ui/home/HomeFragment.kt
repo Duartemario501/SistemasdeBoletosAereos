@@ -38,7 +38,7 @@ class HomeFragment : Fragment() {
         val bundle = Bundle()
         bundle.putString("arg", "VALOR")
 
-        Log.i("SESION-USER", "USUARIO EN SESION: " + auth.currentUser?.uid!!)
+//        Log.i("SESION-USER", "USUARIO EN SESION: " + auth.currentUser?.uid!!)
         //INIT DB
         val db = DBHelper(requireContext());
         if(db.getVuelos()?.moveToFirst() == false){
@@ -48,8 +48,8 @@ class HomeFragment : Fragment() {
         if (!this::mediaPlayer.isInitialized){
             mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
         }
-
-//        mediaPlayer.start()
+        Log.i("PLAYER-HOME", "State player: " + mediaPlayer)
+        mediaPlayer.start()
 
         binding.fab2.setOnClickListener {
 

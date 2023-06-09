@@ -6,7 +6,6 @@ import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
 import android.app.Dialog
 import android.content.Context
 import android.content.pm.PackageManager
-import android.content.res.Resources
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
@@ -15,9 +14,6 @@ import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
 import android.os.Build
 import android.os.Environment
-import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +24,9 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.app.ActivityCompat
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.example.sistemasdeboletosaereos.R
@@ -46,6 +45,8 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     // dimensiones de archivo pdf
     var pageHeight = 1120
     var pageWidth = 792
+    val NOTIFY_ID = 1
+    val CHANNEL_ID = "SOAR_CHANNEL_1"
 
     // Creando imagenes que tendra el pdf del boleto
     lateinit var bmp: Bitmap
@@ -189,12 +190,28 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
                     )
                     db.anyadirDatoprograma_fidelizacion(db.getLastIdPuntos(), idUser, "500")
 
-                    Snackbar.make(
-                        holder.itemView,
-                        "Su compra se realizo exitosamente, puede ver su boleto en el apartado 'Mis Vuelos'",
-                        Snackbar.LENGTH_LONG
-                    )
-                        .setAction("Action", null).show()
+                    val builder = NotificationCompat.Builder(holder.itemView.context, "SOAR_CHANNEL")
+                    builder.setContentTitle("COMPRA COMPLETADA")
+                        .setContentText("Su compra se completo exitosamente.\nVerifique su boleto en Mis Vuelos")
+                        .setSmallIcon(R.drawable.icon_home_viajes)
+                        .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                        .setChannelId(CHANNEL_ID)
+
+                    if (ActivityCompat.checkSelfPermission(
+                            holder.itemView.context,
+                            Manifest.permission.POST_NOTIFICATIONS
+                        ) != PackageManager.PERMISSION_GRANTED
+                    ) {
+                        Snackbar.make(
+                            holder.itemView,
+                            "No cuenta con permisos para enviar notificaciones",
+                            Snackbar.LENGTH_LONG
+                        ).setAction("Action", null).show()
+                        return@setOnClickListener
+                    }
+                    NotificationManagerCompat.from(holder.itemView.context).notify(NOTIFY_ID, builder.build())
+
                     dialog.dismiss()
                 }
             }
@@ -230,7 +247,6 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     override fun getItemCount(): Int {
         return vuelos.size
     }
-
 
     @RequiresApi(Build.VERSION_CODES.KITKAT)
     fun generatePDF(context: Context, idBoleto: String, vueloEnc: String, vueloHora: String, vueloDesc: String) {

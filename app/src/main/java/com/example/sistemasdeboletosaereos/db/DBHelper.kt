@@ -47,6 +47,9 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         val pasajero="CREATE TABLE pasajero ("+
                 "    id INT PRIMARY KEY,"+
                 "    nombre VARCHAR(255),"+
+                "    correo VARCHAR(100),"+
+                "    password VARCHAR(100),"+
+                "    telefono VARCHAR(50),"+
                 "    fecha_nacimiento DATE,"+
                 "    numero_pasaporte VARCHAR(255)"+
                 ");"
@@ -179,6 +182,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
 //        db.execSQL("INSERT INTO pasajero\n" +
 //                "(id, nombre, fecha_nacimiento, numero_pasaporte)\n" +
 //                "VALUES(1, 'Mauricio', '', 'AD85')")
+        db.close()
     }
     fun anyadirDatoaerolinea(id: String, nombre: String, ) {
         val datosaerolinea = ContentValues()
@@ -206,6 +210,20 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         datosavion.put("modelo", modelo)
         val db = this.writableDatabase
         db.insert("avion", null, datosavion)
+        db.close()
+    }
+
+    fun updateAvion(id: String, modelo: String, ) {
+        val datosavion = ContentValues()
+        datosavion.put("modelo", modelo)
+        val db = this.writableDatabase
+        db.update("avion", datosavion, "id=?", arrayOf(id))
+        db.close()
+    }
+
+    fun deleteAvion(id: String){
+        val db = this.writableDatabase
+        db.delete("avion", "id=?", arrayOf(id))
         db.close()
     }
 
@@ -311,6 +329,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
 
         return vuelos
     }
+
+    fun getAviones(): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT * FROM avion ", null, null)
+
+        return vuelos
+    }
     fun getDestinos(): Cursor? {
         val db = readableDatabase
         val vuelos = db.rawQuery("SELECT * FROM ruta r ", null, null)
@@ -385,6 +410,11 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         }
         return id.toString()
     }
+    fun getUsuarioByUid(uid: String): Cursor {
+        val db = readableDatabase
+        val user = db.rawQuery("SELECT * FROM pasajero p WHERE numero_pasaporte = ?", arrayOf(uid), null)
+        return user
+    }
     fun getAsiento(user: String, vuelo_id: String): String {
         val db = readableDatabase
         val idre = db.rawQuery("SELECT asiento FROM reservacion r\n" +
@@ -402,6 +432,7 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         val db = writableDatabase
 
         db.execSQL("UPDATE reservacion SET estado = 'CNC' WHERE id = '" + id + "'")
+        db.close()
         return "Vuelo cancelado"
     }
 }

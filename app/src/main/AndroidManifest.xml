@@ -21,7 +21,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.SistemasdeBoletosAereos"
         tools:targetApi="31">
-
+        <activity
+            android:name=".AdminActivity"
+            android:exported="false" />
         <!--
              TODO: Before you run your application, you need a Google Maps API key.
 
@@ -35,7 +37,7 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAAltulQwlKKWV9KA6b8gFQJjsOzk_Rzl8"/>
+            android:value="AIzaSyAAltulQwlKKWV9KA6b8gFQJjsOzk_Rzl8" />
 
         <activity
             android:name=".extra.MapsActivity"
@@ -44,7 +46,7 @@
         <activity
             android:name=".extra.QR"
             android:exported="false"
-            android:label="Escanea tu boleto"/>
+            android:label="Escanea tu boleto" />
         <activity
             android:name=".Start"
             android:configChanges="orientation|keyboardHidden|screenSize"

@@ -1,33 +1,30 @@
 package com.example.sistemasdeboletosaereos.admin
 
+import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.EditText
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.sistemasdeboletosaereos.R
+import com.example.sistemasdeboletosaereos.databinding.FragmentAvionBinding
+import com.example.sistemasdeboletosaereos.db.AvionesEntity
+import com.example.sistemasdeboletosaereos.db.DBHelper
+import com.example.sistemasdeboletosaereos.util.AvionAdapter
+import com.google.android.material.snackbar.Snackbar
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [AvionFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
 class AvionFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private var _binding: FragmentAvionBinding? = null
+
+    // This property is only valid between onCreateView and
+    // onDestroyView.
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
@@ -35,26 +32,63 @@ class AvionFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_avion, container, false)
-    }
+        _binding = FragmentAvionBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment AvionFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            AvionFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+        val db = DBHelper(requireContext())
+
+        var aviones = ArrayList<AvionesEntity>()
+
+        val rv = binding.rvAviones
+        rv.setHasFixedSize(true)
+        rv.layoutManager = LinearLayoutManager(context)
+
+        val avionesCursor = db.getAviones()
+        if(avionesCursor?.moveToFirst()== true){
+            do {
+                var avion: AvionesEntity = AvionesEntity(
+                    avionesCursor.getString(0).toInt(), avionesCursor.getString(1)
+                )
+                aviones.add(avion)
+            }while (avionesCursor.moveToNext())
+        }
+        val adapter = AvionAdapter(aviones)
+        rv.adapter = adapter
+
+        binding.btnAdd.setOnClickListener {
+            val dialog = Dialog(requireContext())
+            dialog.setContentView(R.layout.add_avion_dialog)
+
+            val modelo: EditText = dialog.findViewById(R.id.edit_modelo)
+            val btnAdd: Button = dialog.findViewById(R.id.btn_add_avion)
+
+            btnAdd.setOnClickListener {
+                val id = aviones.size + 1
+                db.anyadirDatoavion(id.toString(), modelo.text.toString());
+
+                //Se recarga la informacion
+                aviones.clear()
+                val avionesCursor = db.getAviones()
+                if(avionesCursor?.moveToFirst()== true){
+                    do {
+                        var avion: AvionesEntity = AvionesEntity(
+                            avionesCursor.getString(0).toInt(), avionesCursor.getString(1)
+                        )
+                        aviones.add(avion)
+                    }while (avionesCursor.moveToNext())
                 }
+                adapter.setFilteredList(aviones)
+                Snackbar.make(
+                    requireView(),
+                    "Avion Agregado",
+                    Snackbar.LENGTH_LONG
+                ).setAction("Action", null).show()
+                dialog.dismiss()
             }
+
+            dialog.show()
+        }
+        return root
+
     }
 }

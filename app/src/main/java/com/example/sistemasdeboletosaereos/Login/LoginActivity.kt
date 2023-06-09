@@ -1,26 +1,23 @@
 package com.example.sistemasdeboletosaereos.Login
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.TextUtils
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.sistemasdeboletosaereos.AdminActivity
 import com.example.sistemasdeboletosaereos.MainActivity
 import com.example.sistemasdeboletosaereos.R
 import com.example.sistemasdeboletosaereos.db.DBHelper
-import com.example.sistemasdeboletosaereos.util.Admin
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseAuthException
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
 
 
 class LoginActivity : AppCompatActivity() {
@@ -89,7 +86,7 @@ class LoginActivity : AppCompatActivity() {
             getUserRole(uid) { role ->
                 if (role == "admin") {
                     // El usuario es administrador
-                    startActivity(Intent(this, Admin::class.java))
+                    startActivity(Intent(this, AdminActivity::class.java))
                 } else {
                     // El usuario no es administrador
                     signIn()
@@ -142,8 +139,8 @@ class LoginActivity : AppCompatActivity() {
                                             val role = dataSnapshot.child("role").getValue(String::class.java)
                                             // Redirigir al usuario a la pantalla correspondiente en función de su rol
                                             when (role) {
-                                                "admin" -> AccionAdmin()
-                                                "usuario" -> AccionUsuario()
+                                                "admin" -> AccionUsuario()
+                                                "usuario" -> AccionAdmin()
                                                 else -> Toast.makeText(
                                                     this@LoginActivity,
                                                     "Rol no válido.",
@@ -206,7 +203,7 @@ class LoginActivity : AppCompatActivity() {
     }
     private fun AccionAdmin(){
 
-        startActivity(Intent(this,Admin::class.java))
+        startActivity(Intent(this,AdminActivity::class.java))
     }
     private fun esCorreoValido(correo: String): Boolean {
         return if (correo.isEmpty()) {

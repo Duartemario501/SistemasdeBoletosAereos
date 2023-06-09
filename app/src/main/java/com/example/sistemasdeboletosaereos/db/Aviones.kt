@@ -9,8 +9,6 @@ data class AvionesEntity(
     @PrimaryKey
     @ColumnInfo(name = "id", defaultValue = "1")
     val id: Int,
-    val nombre: String,
-    val dirrecion: String,
-    val telefono: String,
+    val modelo: String
 
     )
