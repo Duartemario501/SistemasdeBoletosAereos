@@ -15,7 +15,7 @@
 
         <TextView
             android:id="@+id/txt_modelo"
-            android:layout_width="200dp"
+            android:layout_width="240dp"
             android:layout_height="wrap_content"
             android:justificationMode="inter_word"
             android:padding="8dp"
@@ -29,7 +29,7 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_edit"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
@@ -43,11 +43,11 @@
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/btn_delete"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="4dp"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
             android:paddingStart="8dp"
-            android:backgroundTint="@android:color/holo_orange_dark"
+            android:backgroundTint="@android:color/holo_red_light"
             app:iconPadding="0dp"
             app:cornerRadius="50dp"
             app:icon="@drawable/ic_delete"

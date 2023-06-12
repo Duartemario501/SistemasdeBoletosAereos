@@ -11,7 +11,7 @@ class AdminActivity : AppCompatActivity() {
         setContentView(R.layout.activity_admin)
         if (savedInstanceState == null) {
             supportFragmentManager.beginTransaction()
-                .replace(R.id.container, AdminFragment.newInstance())
+                .replace(R.id.container, AdminFragment())
                 .commitNow()
         }
     }

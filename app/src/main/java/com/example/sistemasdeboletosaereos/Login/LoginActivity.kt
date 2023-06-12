@@ -139,13 +139,18 @@ class LoginActivity : AppCompatActivity() {
                                             val role = dataSnapshot.child("role").getValue(String::class.java)
                                             // Redirigir al usuario a la pantalla correspondiente en función de su rol
                                             when (role) {
-                                                "admin" -> AccionUsuario()
-                                                "usuario" -> AccionAdmin()
+                                                "admin" -> AccionAdmin()
+                                                "usuario" -> AccionUsuario()
                                                 else -> Toast.makeText(
                                                     this@LoginActivity,
                                                     "Rol no válido.",
                                                     Toast.LENGTH_LONG
                                                 ).show()
+                                            }
+                                            //INIT DB
+                                            val db = DBHelper(applicationContext);
+                                            if(db.getAviones()?.moveToFirst() == false){
+                                                db.llenarDB()
                                             }
                                         }
 

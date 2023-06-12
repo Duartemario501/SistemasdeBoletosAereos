@@ -1,4 +1,4 @@
-package com.example.sistemasdeboletosaereos.admin
+package com.example.sistemasdeboletosaereos.ui.admin
 
 import android.app.Dialog
 import android.os.Bundle
@@ -52,7 +52,7 @@ class AvionFragment : Fragment() {
                 aviones.add(avion)
             }while (avionesCursor.moveToNext())
         }
-        val adapter = AvionAdapter(aviones)
+        val adapter = AvionAdapter(aviones, "AVION")
         rv.adapter = adapter
 
         binding.btnAdd.setOnClickListener {

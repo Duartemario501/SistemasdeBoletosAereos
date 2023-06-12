@@ -9,6 +9,7 @@ import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
+import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.pdf.PdfDocument
@@ -71,11 +72,13 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): VueloViewHolder {
         var view : View? = null
 
-
-        if(version == 1) {
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
-        }else{
-            view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_vuelo, parent, false)
+        when(version){
+            1,3 ->{
+                view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout, parent, false)
+            }
+            else -> {
+                view = LayoutInflater.from(parent.context).inflate(R.layout.item_layout_vuelo, parent, false)
+            }
         }
 
         context = parent.context
@@ -115,17 +118,20 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
                 this.notifyItemChanged(position)
             }
         }
+        if(version == 3){
+            val btn : Button = holder.itemView.findViewById(R.id.btnCompra)
+            btn.visibility = View.INVISIBLE
+        }
         holder.itemView.findViewById<View>(R.id.btnCompra).setOnClickListener {
 //            Log.i("SELECCION-BOLETO","El boleto seleccionado es: " + vuelos.get(position).destino)
             val dialog : Dialog = Dialog(holder.itemView.context)
             dialog.setContentView(R.layout.custom_dialog)
             val total:  TextView = dialog.findViewById(R.id.txtTotal)
             val btnComprar : Button = dialog.findViewById(R.id.btnCompra)
-            if(version == 2 )
-                btnComprar.setText("Imprimir")
-            val asiento : EditText = dialog.findViewById(R.id.editAsiento)
 
+            val asiento : EditText = dialog.findViewById(R.id.editAsiento)
             if(version == 2){
+                btnComprar.setText("Imprimir")
                 asiento.setText(db.getAsiento(db.getIdUsuarioByUid(auth.uid!!), vuelo.id))
             }
             //Deshabilitado hasta implementar compras de varios vuelos
@@ -178,7 +184,7 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
                         )
                             .show()
                     }
-                }else {
+                }else if(version == 1){
                     val idUser = db.getIdUsuarioByUid(auth.uid!!)
                     db.anyadirDatoreservacion(
                         db.getLastIdReservacion(),
@@ -191,8 +197,10 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
                     db.anyadirDatoprograma_fidelizacion(db.getLastIdPuntos(), idUser, "500")
 
                     val builder = NotificationCompat.Builder(holder.itemView.context, "SOAR_CHANNEL")
+                    val message = "Su compra se completo exitosamente.\nVerifique su boleto en la opción Mis Vuelos"
                     builder.setContentTitle("COMPRA COMPLETADA")
-                        .setContentText("Su compra se completo exitosamente.\nVerifique su boleto en Mis Vuelos")
+                        .setStyle(NotificationCompat.BigTextStyle().bigText(message))
+                        .setContentText(message)
                         .setSmallIcon(R.drawable.icon_home_viajes)
                         .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         .setPriority(NotificationCompat.PRIORITY_DEFAULT)

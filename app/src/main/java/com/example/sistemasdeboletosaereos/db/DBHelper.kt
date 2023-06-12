@@ -212,22 +212,6 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db.insert("avion", null, datosavion)
         db.close()
     }
-
-    fun updateAvion(id: String, modelo: String, ) {
-        val datosavion = ContentValues()
-        datosavion.put("modelo", modelo)
-        val db = this.writableDatabase
-        db.update("avion", datosavion, "id=?", arrayOf(id))
-        db.close()
-    }
-
-    fun deleteAvion(id: String){
-        val db = this.writableDatabase
-        db.delete("avion", "id=?", arrayOf(id))
-        db.close()
-    }
-
-
    fun anyadirDatovuelo(id: String, aerolinea_id: String, ruta_id: String, avion_id: String, fecha_salida: String, hora_salida: String, fecha_regreso: String,
                         descripcion: String, duracion: String, precio: Double) {
         val datosvuelo = ContentValues()
@@ -336,6 +320,13 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
 
         return vuelos
     }
+
+    fun getAerolineas(): Cursor? {
+        val db = readableDatabase
+        val vuelos = db.rawQuery("SELECT * FROM aerolinea ", null, null)
+
+        return vuelos
+    }
     fun getDestinos(): Cursor? {
         val db = readableDatabase
         val vuelos = db.rawQuery("SELECT * FROM ruta r ", null, null)
@@ -434,5 +425,54 @@ class DBHelper(context: Context) : SQLiteOpenHelper(context, "Sistemasboletoaere
         db.execSQL("UPDATE reservacion SET estado = 'CNC' WHERE id = '" + id + "'")
         db.close()
         return "Vuelo cancelado"
+    }
+
+    fun updateAvion(id: String, modelo: String, ) {
+        val datosavion = ContentValues()
+        datosavion.put("modelo", modelo)
+        val db = this.writableDatabase
+        db.update("avion", datosavion, "id=?", arrayOf(id))
+        db.close()
+    }
+    fun updateAerolinea(id: String, nombre: String) {
+        val datosavion = ContentValues()
+        datosavion.put("nombre", nombre)
+        val db = this.writableDatabase
+        db.update("aerolinea", datosavion, "id=?", arrayOf(id))
+        db.close()
+    }
+
+    fun deleteAvion(id: String){
+        val db = this.writableDatabase
+        db.delete("avion", "id=?", arrayOf(id))
+        db.close()
+    }
+    fun deleteAerolinea(id: String){
+        val db = this.writableDatabase
+        db.delete("aerolinea", "id=?", arrayOf(id))
+        db.close()
+    }
+    fun updateRuta(id: String, origen: String, destino: String ) {
+        val datosavion = ContentValues()
+        datosavion.put("origen", origen)
+        datosavion.put("destino", destino)
+        val db = this.writableDatabase
+        db.update("ruta", datosavion, "id=?", arrayOf(id))
+        db.close()
+    }
+    fun deleteRuta(id: String): String{
+        val db = this.writableDatabase
+        val query = "SELECT * FROM vuelo v \n" +
+                "INNER JOIN ruta r ON v.ruta_id = r.id \n" +
+                "WHERE r.id = ?"
+        var msg = ""
+        if(db.rawQuery(query, arrayOf(id), null).moveToFirst()){
+            msg = "Esta ruta no puede ser eliminada porque esta siendo usada en algunos vuelos"
+        }else {
+            msg = "Ruta eliminada"
+            db.delete("ruta", "id=?", arrayOf(id))
+        }
+        db.close()
+        return msg
     }
 }

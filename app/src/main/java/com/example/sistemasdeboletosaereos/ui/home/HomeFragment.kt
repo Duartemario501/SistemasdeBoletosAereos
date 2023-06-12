@@ -39,11 +39,6 @@ class HomeFragment : Fragment() {
         bundle.putString("arg", "VALOR")
 
 //        Log.i("SESION-USER", "USUARIO EN SESION: " + auth.currentUser?.uid!!)
-        //INIT DB
-        val db = DBHelper(requireContext());
-        if(db.getVuelos()?.moveToFirst() == false){
-            db.llenarDB()
-        }
 
         if (!this::mediaPlayer.isInitialized){
             mediaPlayer = MediaPlayer.create(requireContext(),R.raw.aud2)
