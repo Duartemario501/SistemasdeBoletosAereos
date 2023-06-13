@@ -95,7 +95,10 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
         val db = DBHelper(holder.itemView.context)
         val vuelo = vuelos[position]
         holder.logo.setImageResource(R.drawable.icon_home_viajes)
-        holder.titleTv.text = vuelo.destino + " ("+vuelo.estado+") "
+        if(version== 1 || version == 3)
+            holder.titleTv.text = vuelo.destino
+        else
+            holder.titleTv.text = vuelo.destino.plus("(${vuelo.estado})")
         holder.langDescTv.text = vuelo.descripcion + ". Esta agendando desde " +
                  vuelo.fecha_salida + " hasta " + vuelo.fecha_regreso
         holder.price.text = "$" + vuelo.precio
