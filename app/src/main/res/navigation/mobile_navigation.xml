@@ -31,6 +31,11 @@
         android:name="com.example.sistemasdeboletosaereos.ui.vuelo.VuelosFragment"
         android:label="Mis Vuelos"
         tools:layout="@layout/fragment_vuelos" />
+    <fragment
+        android:id="@+id/adminFragment"
+        android:name="com.example.sistemasdeboletosaereos.ui.admin.AdminFragment"
+        android:label="fragment_admin"
+        tools:layout="@layout/fragment_admin" />
 
 
 </navigation>

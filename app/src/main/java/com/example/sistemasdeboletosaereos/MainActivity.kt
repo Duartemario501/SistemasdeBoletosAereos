@@ -2,34 +2,36 @@ package com.example.sistemasdeboletosaereos
 
 import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
-import android.content.pm.PackageManager
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import com.google.android.material.navigation.NavigationView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
+import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.drawerlayout.widget.DrawerLayout
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat
-import androidx.core.content.ContextCompat
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
 import com.example.sistemasdeboletosaereos.botaero.Chat
 import com.example.sistemasdeboletosaereos.databinding.ActivityMainBinding
 import com.example.sistemasdeboletosaereos.extra.MapsActivity
 import com.example.sistemasdeboletosaereos.extra.QR
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.google.android.material.navigation.NavigationView
 import com.google.firebase.auth.FirebaseAuth
 
 
@@ -39,6 +41,19 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var auth: FirebaseAuth
     val CHANNEL_ID = "SOAR_CHANNEL_1"
+    private var backPressedTime: Long = 0
+
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedTime + 3000 > System.currentTimeMillis()) {
+                isEnabled = false
+                finishAffinity()
+            } else {
+                Toast.makeText(baseContext, "Presiona de nuevo para salir", Toast.LENGTH_SHORT).show()
+            }
+            backPressedTime = System.currentTimeMillis()
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +94,7 @@ class MainActivity : AppCompatActivity() {
 
         val chatbttn = findViewById<FloatingActionButton>(R.id.fab)
         chatbttn.setOnClickListener(View.OnClickListener { startActivity(Intent(this, Chat::class.java))})
-
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
     }
     private fun accion(){
         startActivity(Intent(this, LoginActivity::class.java))

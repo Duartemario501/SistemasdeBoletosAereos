@@ -7,7 +7,6 @@
     tools:context=".Login.RegistroActivity">
 
 
-
     <Button
         android:id="@+id/button"
         android:layout_width="359dp"
@@ -31,25 +30,6 @@
         app:layout_constraintGuide_begin="49dp" />
 
     <EditText
-        android:id="@+id/TxtContraseña"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/EtiRegistro"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="-6dp"
-        android:layout_marginRight="30dp"
-        android:ems="10"
-        android:hint="Contraseña"
-        android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/txtEmpresa2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.806"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
         android:id="@+id/txtCorreo"
         android:layout_width="352dp"
         android:layout_height="46dp"
@@ -62,10 +42,65 @@
         android:inputType="textEmailAddress"
         app:layout_constraintBottom_toTopOf="@+id/TxtContraseña"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.508"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.932"
+        app:layout_constraintVertical_bias="0.931"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/txtNombre"
+        android:layout_width="345dp"
+        android:layout_height="0dp"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginBottom="20dp"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toTopOf="@+id/TxtFechaNacimiento"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/TxtFechaNacimiento"
+        android:layout_width="351dp"
+        android:layout_height="49dp"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
+        android:cursorVisible="false"
+        android:ems="10"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="Fecha de nacimiento"
+        android:inputType="none"
+        app:layout_constraintBottom_toTopOf="@+id/txtTelefono"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.906"
+        tools:ignore="MissingConstraints" />
+
+    <EditText
+        android:id="@+id/TxtContraseña"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/EtiRegistro"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="-6dp"
+        android:layout_marginRight="30dp"
+        android:ems="10"
+        android:hint="Contraseña"
+        android:inputType="textPassword"
+        app:layout_constraintBottom_toTopOf="@+id/txtEmpresa2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.804"
         tools:ignore="MissingConstraints" />
 
     <EditText
@@ -87,44 +122,6 @@
         app:layout_constraintVertical_bias="0.936"
         tools:ignore="MissingConstraints" />
 
-    <EditText
-        android:id="@+id/txtNombre"
-        android:layout_width="345dp"
-        android:layout_height="0dp"
-        android:layout_below="@+id/EtiRegistro"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginBottom="24dp"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="textPersonName"
-        app:layout_constraintBottom_toTopOf="@+id/TxtFechaNacimiento"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.545"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:ignore="MissingConstraints" />
-
-    <EditText
-        android:id="@+id/TxtFechaNacimiento"
-        android:layout_width="351dp"
-        android:layout_height="49dp"
-        android:layout_below="@+id/EtiRegistro"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="-6dp"
-        android:layout_marginRight="30dp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:cursorVisible="false"
-        android:inputType="none"
-        android:ems="10"
-        android:hint="Fecha de nacimiento"
-        app:layout_constraintBottom_toTopOf="@+id/txtTelefono"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.904"
-        tools:ignore="MissingConstraints" />
-
 
     <Spinner
         android:id="@+id/spnAreaCode"
@@ -133,19 +130,20 @@
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/txtTelefono"
+        app:layout_constraintHorizontal_bias="0.634"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.527"
+        app:layout_constraintVertical_bias="0.524"
         tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/txtEmpresa"
         android:layout_width="412dp"
         android:layout_height="65dp"
-        android:background="#00acb6"
         android:layout_marginLeft="30dp"
         android:layout_marginTop="-6dp"
         android:layout_marginRight="30dp"
+        android:background="#00acb6"
         android:text="@string/soar"
         android:textAlignment="center"
         android:textColor="@color/white"
@@ -220,13 +218,16 @@
         tools:ignore="MissingConstraints" />
 
     <Button
-        android:onClick="Regresar"
-        android:layout_width="89dp"
-        android:layout_height="53dp"
+        android:layout_width="56dp"
+        android:layout_height="40dp"
+        android:background="#00FFFFFF"
+        android:backgroundTint="#00FFFFFF"
         android:drawableBottom="?attr/actionModeCloseDrawable"
         android:drawableTint="#D3FFFFFF"
+        android:onClick="Regresar"
+        app:strokeColor="#00FFFFFF"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="-5dp"
-        tools:ignore="MissingConstraints" />
+        tools:layout_editor_absoluteY="7dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

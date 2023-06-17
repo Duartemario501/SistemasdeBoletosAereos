@@ -11,7 +11,7 @@
         android:id="@+id/logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/landscape_format__transparent_background__shadow_designify" />
@@ -21,6 +21,7 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="16dp"
+        android:layout_marginTop="4dp"
         android:hint="Usuario"
         android:inputType="textEmailAddress"
         android:textColor="@color/black_overlay"
@@ -28,11 +29,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/logo" />
+
     <EditText
         android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="16dp"
+        android:layout_marginTop="8dp"
         android:hint="Contraseña"
         android:inputType="textPassword"
         android:textColor="@color/black_overlay"
@@ -77,11 +80,11 @@
         android:textColor="@color/black_overlay"
         android:textColorHint="@color/black_overlay"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/password"
-        app:layout_constraintVertical_bias="0.92" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -96,8 +99,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/button2"
-        app:layout_constraintVertical_bias="0.941" />
-
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
