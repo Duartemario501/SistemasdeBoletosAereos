@@ -81,8 +81,7 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
 
-        
-
+        mediaPlayer.pause()
         super.onDestroyView()
         _binding = null
     }

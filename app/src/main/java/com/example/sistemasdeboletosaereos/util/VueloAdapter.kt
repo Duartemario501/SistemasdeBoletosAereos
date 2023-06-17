@@ -130,13 +130,15 @@ class VueloAdapter(private var vuelos: List<VuelosEntity>, private var version: 
             val dialog : Dialog = Dialog(holder.itemView.context)
             dialog.setContentView(R.layout.custom_dialog)
             val total:  TextView = dialog.findViewById(R.id.txtTotal)
+            val precio:  TextView = dialog.findViewById(R.id.txtPrecio)
             val btnComprar : Button = dialog.findViewById(R.id.btnCompra)
-
             val asiento : EditText = dialog.findViewById(R.id.editAsiento)
             if(version == 2){
                 btnComprar.setText("Imprimir")
                 asiento.setText(db.getAsiento(db.getIdUsuarioByUid(auth.uid!!), vuelo.id))
             }
+            total.text = "$${vuelo.precio}"
+            precio.text = "$${vuelo.precio}"
             //Deshabilitado hasta implementar compras de varios vuelos
 //            val cantidad : EditText = dialog.findViewById<View>(R.id.editCantidad) as EditText
 //            cantidad.setText("1")
