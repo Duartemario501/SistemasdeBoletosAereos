@@ -1,13 +1,14 @@
 package com.example.sistemasdeboletosaereos.Login
 
 import android.content.Intent
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.EditText
 import android.widget.ProgressBar
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.app.AppCompatActivity
 import com.example.sistemasdeboletosaereos.AdminActivity
 import com.example.sistemasdeboletosaereos.MainActivity
 import com.example.sistemasdeboletosaereos.R
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var txtNombre: EditText
     private lateinit var auth: FirebaseAuth
     private lateinit var dbLocal: DBHelper
-
+    private var backPressedTime: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,8 +39,21 @@ class LoginActivity : AppCompatActivity() {
         txtuser=findViewById(R.id.username)
         progressBar=findViewById(R.id.barra)
         auth= FirebaseAuth.getInstance()
+        onBackPressedDispatcher.addCallback(this, backPressedCallback)
 
 
+
+    }
+    private val backPressedCallback = object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            if (backPressedTime + 3000 > System.currentTimeMillis()) {
+                isEnabled = false
+                finishAffinity()
+            } else {
+                Toast.makeText(baseContext, "Presiona de nuevo para salir", Toast.LENGTH_SHORT).show()
+            }
+            backPressedTime = System.currentTimeMillis()
+        }
     }
 
 
@@ -58,6 +72,8 @@ class LoginActivity : AppCompatActivity() {
         progressBar.visibility = view.visibility
         if (user.isEmpty() || password.isEmpty()) {
             Toast.makeText(this, "Por favor ingrese su usuario y contraseña.", Toast.LENGTH_LONG).show()
+            txtContraseña.setText("")
+            txtuser.setText("")
         } else {
             // Clase para representar un usuariodata
             class User(
@@ -80,7 +96,7 @@ class LoginActivity : AppCompatActivity() {
                 })
             }
 
-// Ejemplo de uso
+
             val user = FirebaseAuth.getInstance().currentUser
             val uid = user?.uid.toString()
             getUserRole(uid) { role ->
@@ -97,6 +113,7 @@ class LoginActivity : AppCompatActivity() {
 
 
         }
+
     }
 
     private fun isValidEmail(email: String): Boolean {
@@ -113,6 +130,9 @@ class LoginActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
             ).show()
             return
+            txtContraseña.setText("")
+            txtuser.setText("")
+
         }
 
         auth.signInWithEmailAndPassword(user, password)
@@ -165,6 +185,8 @@ class LoginActivity : AppCompatActivity() {
                                 } else {
                                     Toast.makeText(this, "Cuenta no verificada", Toast.LENGTH_LONG)
                                         .show()
+                                    txtContraseña.setText("")
+                                    txtuser.setText("")
                                 }
                             } else {
                                 Toast.makeText(
@@ -172,6 +194,8 @@ class LoginActivity : AppCompatActivity() {
                                     "Error al verificar la cuenta",
                                     Toast.LENGTH_LONG
                                 ).show()
+                                txtContraseña.setText("")
+                                txtuser.setText("")
                             }
                         }
                     }
@@ -194,6 +218,8 @@ class LoginActivity : AppCompatActivity() {
                             .show()
                     }
                     Toast.makeText(this, "Error al iniciar sesión.", Toast.LENGTH_LONG).show()
+                    txtContraseña.setText("")
+                    txtuser.setText("")
                 }
             }
     }

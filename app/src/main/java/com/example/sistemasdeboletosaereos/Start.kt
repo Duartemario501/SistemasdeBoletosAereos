@@ -13,7 +13,6 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.example.sistemasdeboletosaereos.Login.LoginActivity
-import com.example.sistemasdeboletosaereos.Login.RegistroActivity
 import com.example.sistemasdeboletosaereos.databinding.ActivityStartBinding
 import com.google.firebase.auth.FirebaseAuth
 
@@ -97,26 +96,33 @@ class Start : AppCompatActivity() {
         // Upon interacting with UI controls, delay any scheduled hide()
         // operations to prevent the jarring behavior of controls going away
         // while interacting with the UI.
-        binding.fullscreenContent.setOnTouchListener(delayHideTouchListener)
-        Handler().postDelayed({
-                val mainIntent = Intent(this@Start, LoginActivity::class.java)
-                startActivity(mainIntent)
-                finish()
-            }, SPLASH_TIME_OUT.toLong())
+
         auth = FirebaseAuth.getInstance()
 
-        val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
-            val user = firebaseAuth.currentUser
-            if (user != null) {
-                // El usuario ya ha iniciado sesión, redirigirlo a la pantalla principal de la aplicación.
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-                finish()
-            }
+        if (auth.currentUser != null) {
+            redirectToMainActivity()
+        }
+        else{
+            binding.fullscreenContent.setOnTouchListener(delayHideTouchListener)
+            Handler().postDelayed(
+                {
+                    val mainIntent = Intent(this@Start, LoginActivity::class.java)
+                    startActivity(mainIntent)
+                    finish()
+                },
+                SPLASH_TIME_OUT.toLong(),
+            )
+
         }
 
 
 
+
+    }
+    private fun redirectToMainActivity() {
+        val intent = Intent(this, MainActivity::class.java)
+        startActivity(intent)
+        finish()
     }
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
