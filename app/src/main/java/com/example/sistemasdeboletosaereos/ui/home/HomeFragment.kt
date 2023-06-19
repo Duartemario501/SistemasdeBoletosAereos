@@ -79,6 +79,14 @@ class HomeFragment : Fragment() {
         return root
     }
 
+    fun stopMediaPlayer() {
+        if (mediaPlayer.isPlaying) {
+            mediaPlayer.stop()
+        }
+        mediaPlayer.release()
+    }
+
+
     override fun onDestroyView() {
 
         mediaPlayer.pause()
